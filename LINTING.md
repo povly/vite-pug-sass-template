@@ -5,21 +5,25 @@
 ## Установленные инструменты
 
 ### ESLint
+
 - **Назначение**: Проверка JavaScript кода на ошибки и соблюдение стандартов
 - **Конфиг**: `eslint.config.js`
 - **Поддерживает**: ES modules, браузерные globals, автофикс
 
 ### Stylelint
+
 - **Назначение**: Проверка CSS/SCSS кода
 - **Конфиг**: `stylelint.config.js`
 - **Поддерживает**: SCSS синтаксис, автофикс
 
 ### Prettier
+
 - **Назначение**: Автоматическое форматирование кода
 - **Конфиг**: `.prettierrc`
 - **Поддерживает**: JS, CSS, SCSS, HTML, Markdown
 
 ### Pug-lint
+
 - **Назначение**: Проверка Pug шаблонов
 - **Конфиг**: `.pugrc.js`
 - **Поддерживает**: Валидация синтаксиса и стиля
@@ -27,6 +31,7 @@
 ## Команды
 
 ### Линтинг
+
 ```bash
 # Проверить все файлы
 npm run lint
@@ -42,6 +47,7 @@ npm run lint:pug
 ```
 
 ### Форматирование
+
 ```bash
 # Форматировать все файлы
 npm run format
@@ -60,6 +66,7 @@ npm run check-format
 ```
 
 ### Комбинированные команды
+
 ```bash
 # Линтинг + форматирование
 npm run lint-staged
@@ -68,17 +75,20 @@ npm run lint-staged
 ## Настройки
 
 ### ESLint правила
+
 - `no-console`: warning - предупреждение о console.log
 - `no-unused-vars`: warning - неиспользуемые переменные
 - `prefer-const`: error - использовать const вместо let
 - `no-var`: error - запрет var
 
 ### Stylelint правила
+
 - Стандартные правила SCSS
 - Отключены строгие паттерны для классов и переменных
 - Поддержка CSS modules (composes)
 
 ### Prettier настройки
+
 - Одинарные кавычки
 - Точки с запятой
 - Trailing commas в ES5 стиле
@@ -88,12 +98,15 @@ npm run lint-staged
 ## Интеграция с редактором
 
 ### VS Code
+
 Установите расширения:
+
 - ESLint
 - Stylelint
 - Prettier - Code formatter
 
 Добавьте в `settings.json`:
+
 ```json
 {
   "editor.formatOnSave": true,
@@ -105,11 +118,13 @@ npm run lint-staged
 ```
 
 ### Другие редакторы
+
 Большинство современных редакторов поддерживают эти инструменты через плагины.
 
 ## Исключения
 
 Файлы в `.prettierignore`:
+
 - `node_modules/`
 - `build/`, `dist/`
 - `*.min.js`, `*.min.css`
@@ -118,13 +133,16 @@ npm run lint-staged
 ## Troubleshooting
 
 ### Ошибки ESLint
+
 - Проверьте, что все браузерные API добавлены в globals
 - Используйте `// eslint-disable-next-line` для исключений
 
 ### Ошибки Stylelint
+
 - Убедитесь, что используете SCSS синтаксис
 - Проверьте правильность вложенности
 
 ### Ошибки Prettier
+
 - Pug файлы исключены из автоформатирования
 - Используйте `// prettier-ignore` для исключений
