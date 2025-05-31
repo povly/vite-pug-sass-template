@@ -2,11 +2,19 @@ import { defineConfig } from 'vite';
 import pug from 'vite-plugin-pug';
 import autoprefixer from 'autoprefixer';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-import { resolve } from 'path';
-import { readdirSync, existsSync, copyFileSync, unlinkSync, rmSync } from 'fs';
+import { resolve, dirname } from 'path';
+import {
+  readdirSync,
+  existsSync,
+  copyFileSync,
+  unlinkSync,
+  rmSync,
+  mkdirSync,
+} from 'fs';
 import { execSync } from 'child_process';
 import process from 'process';
 import liveReload from 'vite-plugin-live-reload';
+import commonjs from '@rollup/plugin-commonjs';
 
 // Ручное указание HTML страниц в src/html
 function getHTMLPages() {
@@ -46,7 +54,7 @@ function getJSEntries() {
   }
 
   // Библиотеки
-  const libsDir = 'src/libs';
+  const libsDir = 'src/js/libs';
   if (existsSync(libsDir)) {
     const libFiles = readdirSync(libsDir).filter((file) =>
       file.endsWith('.js')
@@ -155,6 +163,25 @@ function assetConverter() {
           }
         }
       }
+
+      // Конвертация SVG файлов
+      const svgFiles = readdirSync(imagesDir, { recursive: true }).filter(
+        (file) => {
+          if (typeof file !== 'string') return false;
+          return file.toLowerCase().endsWith('.svg');
+        }
+      );
+
+      if (svgFiles.length > 0) {
+        console.log(
+          `🎨 Converting ${svgFiles.length} SVG file(s) during build...`
+        );
+        try {
+          execSync('node scripts/convert-svg.js', { stdio: 'inherit' });
+        } catch (error) {
+          console.error('SVG conversion failed:', error.message);
+        }
+      }
     },
   };
 }
@@ -238,6 +265,7 @@ export default defineConfig(({ command, mode }) => {
         },
       },
       assetConverter(),
+      commonjs(),
     ].filter(Boolean),
     css: {
       preprocessorOptions: {
@@ -254,6 +282,7 @@ export default defineConfig(({ command, mode }) => {
       target: 'es2015',
       cssTarget: 'chrome80',
       outDir: 'build',
+      sourcemap: false,
       rollupOptions: {
         input: {
           ...getHTMLPages(),
@@ -273,9 +302,9 @@ export default defineConfig(({ command, mode }) => {
               return '[name].js';
             }
             // Другие entry points
-            return 'js/[name]-[hash].js';
+            return 'js/[name].js';
           },
-          chunkFileNames: 'js/[name]-[hash].js',
+          chunkFileNames: 'js/[name].js',
           assetFileNames: (assetInfo) => {
             if (assetInfo.name?.endsWith('.css')) {
               // Извлекаем имя файла без лишних путей
