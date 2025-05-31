@@ -5,12 +5,12 @@ include ../mixins/button
 include ../mixins/picture
 
 block variables
-  - var title = "Главная - ViteApp"
-  - var description = "Современный шаблон на Vite с поддержкой Pug, Sass и кроссбраузерности"
-  - var pageCss = "index"
-  - var pageJs = "index"
-  - var blocks = ["header", "button"]
-  - var currentPage = "index"
+  - var title = 'Главная - ViteApp';
+  - var description = 'Современный шаблон на Vite с поддержкой Pug, Sass и кроссбраузерности';
+  - var pageCss = 'index';
+  - var pageJs = 'index';
+  - var blocks = ['header', 'button'];
+  - var currentPage = 'index';
 
 block content
   .container
@@ -18,7 +18,7 @@ block content
       h1.hero__title Vite + Pug + Sass
       p.hero__subtitle Современный шаблон для разработки с полной кроссбраузерной поддержкой
 
-      +button('Демо', 'primary', 'large', '', {class: 'demo-button'})
+      +button('Демо', 'primary', 'large', '', { class: 'demo-button' })
 
       //- Пример hero изображения (когда появятся файлы)
       //- +hero('hero-mobile.jpg', 'hero-tablet.jpg', 'hero-desktop.jpg', 'Hero изображение', 'hero__image')

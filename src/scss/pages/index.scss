@@ -1,9 +1,10 @@
 // Index page styles
-@use '../variables'as *;
-@use '../main.scss';
+@use '../variables' as *;
+@use '../main';
 
 .hero {
   @include flex-center;
+
   min-height: 80vh;
   text-align: center;
 
@@ -34,8 +35,10 @@
     padding: 2rem;
     border-radius: 8px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+
     @include transition(transform);
+
     color: white;
 
     &:hover {
@@ -49,7 +52,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .hero {
     &__title {
       font-size: 2rem;

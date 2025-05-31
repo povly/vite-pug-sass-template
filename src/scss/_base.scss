@@ -10,9 +10,9 @@ html {
   font-weight: 400;
   color-scheme: light dark;
   color: $text-color;
-  background-color: #ffffff;
+  background-color: #fff;
   font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -21,7 +21,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-family: 'Roboto', sans-serif;
+  font-family: Roboto, sans-serif;
 }
 
 // Global layout
@@ -36,19 +36,20 @@ h1,
 h2,
 h3 {
   color: $primary-color;
+
   @include transition(color);
 }
 
 // Media queries
 @media (prefers-color-scheme: dark) {
   html {
-    color: #ffffff;
+    color: #fff;
     background-color: $bg-color;
   }
 
   h1,
   h2,
   h3 {
-    color: #ffffff;
+    color: #fff;
   }
 }

@@ -20,6 +20,7 @@ include ../mixins/picture
 ## Поддерживаемые форматы
 
 ### Входные форматы
+
 - **JPG/JPEG** - фотографии, сложные изображения
 - **PNG** - изображения с прозрачностью, графика
 - **WebP** - современный формат (уже оптимизированный)
@@ -28,6 +29,7 @@ include ../mixins/picture
 - **BMP** - растровые изображения
 
 ### Выходные форматы
+
 - **AVIF** - самое лучшее сжатие (80% качество)
 - **WebP** - широкая поддержка (85% качество)
 - **Оптимизированный оригинал** - fallback (90% качество)
@@ -142,9 +144,11 @@ include ../mixins/picture
 // Разные изображения для разных экранов
 .banner {
   @include responsive-background(
-    'banner-mobile.jpg',    // <= 767px
-    'banner-tablet.jpg',    // 768px - 1023px
-    'banner-desktop.jpg'    // >= 1024px
+    'banner-mobile.jpg',
+    // <= 767px
+    'banner-tablet.jpg',
+    // 768px - 1023px
+    'banner-desktop.jpg' // >= 1024px
   );
 }
 ```
@@ -194,7 +198,7 @@ include ../mixins/picture
 // Intersection Observer для lazy loading
 const images = document.querySelectorAll('img[loading="lazy"]');
 const imageObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
       const img = entry.target;
       img.classList.add('loaded');
@@ -203,7 +207,7 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
   });
 });
 
-images.forEach(img => imageObserver.observe(img));
+images.forEach((img) => imageObserver.observe(img));
 ```
 
 ### Фоновые изображения lazy loading
@@ -212,14 +216,14 @@ images.forEach(img => imageObserver.observe(img));
 // Для фонов с классом lazy-background
 const backgrounds = document.querySelectorAll('.lazy-background');
 const bgObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
       entry.target.classList.add('loaded');
     }
   });
 });
 
-backgrounds.forEach(bg => bgObserver.observe(bg));
+backgrounds.forEach((bg) => bgObserver.observe(bg));
 ```
 
 ## Конфигурация оптимизации
@@ -269,10 +273,10 @@ ViteImageOptimize({
   svg: {
     plugins: [
       { name: 'removeViewBox', active: false },
-      { name: 'removeDimensions', active: true }
-    ]
-  }
-})
+      { name: 'removeDimensions', active: true },
+    ],
+  },
+});
 ```
 
 ## Размеры изображений
@@ -314,9 +318,9 @@ Hero изображения:
 
 ```html
 <!-- В <head> для важных изображений -->
-<link rel="preload" as="image" href="/images/hero.avif" type="image/avif">
-<link rel="preload" as="image" href="/images/hero.webp" type="image/webp">
-<link rel="preload" as="image" href="/images/hero.jpg" type="image/jpeg">
+<link rel="preload" as="image" href="/images/hero.avif" type="image/avif" />
+<link rel="preload" as="image" href="/images/hero.webp" type="image/webp" />
+<link rel="preload" as="image" href="/images/hero.jpg" type="image/jpeg" />
 ```
 
 ### Prioritization
@@ -333,8 +337,8 @@ Hero изображения:
 
 ```html
 <!-- Предзагрузка домена для изображений -->
-<link rel="dns-prefetch" href="//images.example.com">
-<link rel="preconnect" href="//images.example.com">
+<link rel="dns-prefetch" href="//images.example.com" />
+<link rel="preconnect" href="//images.example.com" />
 ```
 
 ## Поддержка браузеров
@@ -350,9 +354,9 @@ Hero изображения:
 ```html
 <!-- Автоматически генерируется миксином +picture -->
 <picture>
-  <source srcset="image.avif" type="image/avif">
-  <source srcset="image.webp" type="image/webp">
-  <img src="image.jpg" alt="Описание">
+  <source srcset="image.avif" type="image/avif" />
+  <source srcset="image.webp" type="image/webp" />
+  <img src="image.jpg" alt="Описание" />
 </picture>
 ```
 
@@ -408,7 +412,8 @@ npm cache clean --force
 
 ```javascript
 // Увеличить качество для больших файлов
-if (fileSize > 2000000) { // 2MB
+if (fileSize > 2000000) {
+  // 2MB
   quality = 95;
 }
 ```
@@ -424,22 +429,26 @@ const maxConcurrency = require('os').cpus().length;
 ## Best Practices
 
 1. **Используйте правильные форматы**:
+
    - JPEG для фотографий
    - PNG для графики с прозрачностью
    - SVG для простых иконок
    - WebP/AVIF для веба
 
 2. **Оптимизируйте размеры**:
+
    - Не загружайте изображения больше, чем нужно
    - Используйте responsive изображения
    - Применяйте lazy loading
 
 3. **Именуйте файлы осмысленно**:
+
    - Используйте описательные названия
    - Группируйте по папкам
    - Следуйте конвенции именования
 
 4. **Тестируйте производительность**:
+
    - Используйте Lighthouse
    - Проверяйте Core Web Vitals
    - Тестируйте на медленных соединениях

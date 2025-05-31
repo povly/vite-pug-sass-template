@@ -24,13 +24,13 @@
   @include background-image($mobile);
 
   @if $tablet {
-    @media (min-width: 768px) {
+    @media (width >= 768px) {
       @include background-image($tablet);
     }
   }
 
   @if $desktop {
-    @media (min-width: 1024px) {
+    @media (width >= 1024px) {
       @include background-image($desktop);
     }
   }
@@ -61,11 +61,11 @@
   background-image: linear-gradient(
     45deg,
     transparent 25%,
-    rgba(255, 255, 255, 0.1) 25%,
-    rgba(255, 255, 255, 0.1) 50%,
+    rgb(255 255 255 / 10%) 25%,
+    rgb(255 255 255 / 10%) 50%,
     transparent 50%,
     transparent 75%,
-    rgba(255, 255, 255, 0.1) 75%
+    rgb(255 255 255 / 10%) 75%
   );
   background-size: 20px 20px;
   animation: loading-shimmer 1.5s infinite linear;
@@ -74,6 +74,7 @@
   // Когда изображение загружено
   &.loaded {
     animation: none;
+
     @include background-image($src);
   }
 }
@@ -82,6 +83,7 @@
   0% {
     background-position: -20px 0;
   }
+
   100% {
     background-position: 20px 0;
   }
@@ -111,7 +113,7 @@
     contain-intrinsic-size: 300px 200px;
 
     // Smooth loading
-    &[loading="lazy"] {
+    &[loading='lazy'] {
       opacity: 0;
       transition: opacity 0.3s ease;
 

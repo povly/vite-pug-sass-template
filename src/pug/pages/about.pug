@@ -4,12 +4,12 @@ extends ../layout/base
 include ../mixins/button
 
 block variables
-  - var title = "О нас - ViteApp"
-  - var description = "Узнайте больше о нашем шаблоне Vite с Pug и Sass"
-  - var pageCss = "about"
-  - var pageJs = "about"
-  - var blocks = ["header", "button"]
-  - var currentPage = "about"
+  - var title = 'О нас - ViteApp';
+  - var description = 'Узнайте больше о нашем шаблоне Vite с Pug и Sass';
+  - var pageCss = 'about';
+  - var pageJs = 'about';
+  - var blocks = ['header', 'button'];
+  - var currentPage = 'about';
 
 block content
   .container
@@ -40,17 +40,17 @@ block content
 
     section.stats
       .stats__item
-        span.stats__item-number(data-target="5") 5
+        span.stats__item-number(data-target='5') 5
         span.stats__item-label Технологий
 
       .stats__item
-        span.stats__item-number(data-target="100") 100
+        span.stats__item-number(data-target='100') 100
         span.stats__item-label % Совместимость
 
       .stats__item
-        span.stats__item-number(data-target="3") 3
+        span.stats__item-number(data-target='3') 3
         span.stats__item-label Секунды сборки
 
       .stats__item
-        span.stats__item-number(data-target="99") 99
+        span.stats__item-number(data-target='99') 99
         span.stats__item-label % Оптимизация

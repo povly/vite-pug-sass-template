@@ -4,9 +4,9 @@
 
 .header {
   background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
   position: sticky;
-  top: 0; 
+  top: 0;
   z-index: 100;
 
   &__container {
@@ -38,7 +38,7 @@
     padding: 0;
     gap: 2rem;
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       gap: 1rem;
     }
   }
@@ -47,6 +47,7 @@
     color: $text-color;
     text-decoration: none;
     font-weight: 500;
+
     @include transition(color);
 
     &:hover,
@@ -63,7 +64,7 @@
     border: none;
     cursor: pointer;
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       display: flex;
     }
 
@@ -72,6 +73,7 @@
       height: 3px;
       background: $text-color;
       margin: 2px 0;
+
       @include transition(all);
     }
   }

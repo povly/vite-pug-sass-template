@@ -5,12 +5,15 @@
 ## 🚀 Быстрый старт
 
 ### 1. Установка зависимостей
+
 ```bash
 npm install ttf2woff ttf2woff2 --save-dev
 ```
 
 ### 2. Добавление шрифтов
+
 Поместите TTF/OTF файлы в `src/fonts/`:
+
 ```
 src/fonts/
 ├── roboto/
@@ -23,11 +26,13 @@ src/fonts/
 ```
 
 ### 3. Конвертация
+
 ```bash
 npm run convert-fonts
 ```
 
 ### 4. Подключение в SCSS
+
 ```scss
 // src/scss/main.scss
 @import 'fonts';
@@ -66,22 +71,25 @@ src/scss/
 ```scss
 @font-face {
   font-family: 'roboto';
-  src: url('/fonts/roboto/Roboto-Regular.woff2') format('woff2'),
-       url('/fonts/roboto/Roboto-Regular.woff') format('woff');
+  src:
+    url('/fonts/roboto/Roboto-Regular.woff2') format('woff2'),
+    url('/fonts/roboto/Roboto-Regular.woff') format('woff');
   font-display: swap;
 }
 
 @font-face {
   font-family: 'roboto';
-  src: url('/fonts/roboto/Roboto-Bold.woff2') format('woff2'),
-       url('/fonts/roboto/Roboto-Bold.woff') format('woff');
+  src:
+    url('/fonts/roboto/Roboto-Bold.woff2') format('woff2'),
+    url('/fonts/roboto/Roboto-Bold.woff') format('woff');
   font-display: swap;
 }
 
 @font-face {
   font-family: 'opensans';
-  src: url('/fonts/opensans/OpenSans-Regular.woff2') format('woff2'),
-       url('/fonts/opensans/OpenSans-Regular.woff') format('woff');
+  src:
+    url('/fonts/opensans/OpenSans-Regular.woff2') format('woff2'),
+    url('/fonts/opensans/OpenSans-Regular.woff') format('woff');
   font-display: swap;
 }
 ```
@@ -89,31 +97,34 @@ src/scss/
 ## ⚙️ Особенности
 
 ### Автоматическая сборка
+
 - Шрифты конвертируются автоматически при `npm run build`
 - Плагин в `vite.config.js` запускает конвертацию
 - Рекурсивный поиск в подпапках
 
 ### Оптимизация
+
 - **WOFF2**: лучшее сжатие, поддержка 95% браузеров
 - **WOFF**: fallback для старых браузеров
 - **font-display: swap**: улучшенная производительность
 
 ### Именование семейств
+
 - Имя папки = `font-family`
 - Пример: `src/fonts/roboto/` → `font-family: 'roboto'`
 - Поддержка любых имен папок
 
 ## 🌐 Поддержка браузеров
 
-| Формат | Chrome | Firefox | Safari | Edge | IE |
-|--------|--------|---------|--------|------|----|
-| WOFF2  | 36+    | 39+     | 12+    | 14+  | ❌ |
-| WOFF   | 6+     | 3.6+    | 5.1+   | 12+  | 9+ |
-
+| Формат | Chrome | Firefox | Safari | Edge | IE  |
+| ------ | ------ | ------- | ------ | ---- | --- |
+| WOFF2  | 36+    | 39+     | 12+    | 14+  | ❌  |
+| WOFF   | 6+     | 3.6+    | 5.1+   | 12+  | 9+  |
 
 ## 🚨 Решение проблем
 
 ### Шрифты не загружаются в dev режиме
+
 ```scss
 // Проверьте пути в _fonts.scss
 src: url('/fonts/...')  ✅ (правильно)
@@ -121,6 +132,7 @@ src: url('./fonts/...') ❌ (неправильно в dev)
 ```
 
 ### Ошибки конвертации
+
 ```bash
 # Проверьте формат входных файлов
 file src/fonts/font.ttf
@@ -133,14 +145,15 @@ npm install ttf2woff ttf2woff2 --save-dev
 ## 📊 Сравнение размеров
 
 | Шрифт Roboto Regular | Размер | Сжатие |
-|---------------------|--------|--------|
-| TTF (исходный)      | 168 KB | -      |
-| WOFF                | 83 KB  | 51%    |
-| WOFF2               | 64 KB  | 62%    |
+| -------------------- | ------ | ------ |
+| TTF (исходный)       | 168 KB | -      |
+| WOFF                 | 83 KB  | 51%    |
+| WOFF2                | 64 KB  | 62%    |
 
 ## 🔄 Автоматизация
 
 ### При каждой сборке
+
 ```javascript
 // vite.config.js уже настроен
 // Автоматический запуск при npm run build
