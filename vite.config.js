@@ -3,55 +3,51 @@ import pug from 'vite-plugin-pug';
 import autoprefixer from 'autoprefixer';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { resolve } from 'path';
-import { readdirSync, existsSync, copyFileSync, unlinkSync, rmSync } from 'fs';
+import {
+  readdirSync,
+  existsSync,
+  copyFileSync,
+  unlinkSync,
+  rmSync,
+  watch,
+} from 'fs';
 import { execSync } from 'child_process';
+import process from "process";
 
-// Ручное указание HTML страниц в src/html
-function getHTMLPages() {
+// Глобальные массивы для отслеживания файлов
+let jsFilesCache = [];
+let scssFilesCache = [];
+let htmlPagesCache = [];
+
+// Инициализация кеша файлов
+function initializeFileCache() {
+  // HTML страницы
   const htmlDir = 'src/html';
-  const pages = {};
-
-  // Вручную указываем страницы
   const pagesList = [
     'index',
     'about',
     // Добавляйте новые страницы здесь
   ];
 
-  pagesList.forEach((pageName) => {
+  htmlPagesCache = pagesList.filter((pageName) => {
     const htmlPath = resolve(process.cwd(), `${htmlDir}/${pageName}.html`);
-    if (existsSync(htmlPath)) {
-      // Используем только имя файла как ключ, чтобы избежать вложенных директорий
-      pages[pageName] = htmlPath;
-    }
+    return existsSync(htmlPath);
   });
 
-  return pages;
-}
-
-// Функция для поиска JS файлов
-function getJSEntries() {
+  // JS файлы
   const jsDir = 'src/js';
-  if (!existsSync(jsDir)) return {};
+  if (existsSync(jsDir)) {
+    jsFilesCache = readdirSync(jsDir)
+      .filter((file) => file.endsWith('.js'))
+      .map((file) => file.replace('.js', ''));
+  }
 
-  const jsFiles = readdirSync(jsDir).filter((file) => file.endsWith('.js'));
-  const entries = {};
-
-  jsFiles.forEach((file) => {
-    const name = file.replace('.js', '');
-    entries[`js/${name}`] = resolve(process.cwd(), `${jsDir}/${file}`);
-  });
-
-  return entries;
-}
-
-// Функция для поиска SCSS файлов
-function getSCSSEntries() {
-  const entries = {};
+  // SCSS файлы
+  scssFilesCache = [];
 
   // Главный файл
   if (existsSync('src/scss/main.scss')) {
-    entries['css/main'] = resolve(process.cwd(), 'src/scss/main.scss');
+    scssFilesCache.push({ type: 'main', name: 'main' });
   }
 
   // Файлы страниц
@@ -62,7 +58,7 @@ function getSCSSEntries() {
     );
     scssFiles.forEach((file) => {
       const name = file.replace('.scss', '');
-      entries[`css/${name}`] = resolve(process.cwd(), `${pagesDir}/${file}`);
+      scssFilesCache.push({ type: 'page', name });
     });
   }
 
@@ -74,12 +70,61 @@ function getSCSSEntries() {
     );
     blockFiles.forEach((file) => {
       const name = file.replace('.scss', '');
-      entries[`css/blocks/${name}`] = resolve(
-        process.cwd(),
-        `${blocksDir}/${file}`
-      );
+      scssFilesCache.push({ type: 'block', name });
     });
   }
+
+  console.log(`📁 Загружено файлов:`);
+  console.log(`   HTML: ${htmlPagesCache.length}`);
+  console.log(`   JS: ${jsFilesCache.length}`);
+  console.log(`   SCSS: ${scssFilesCache.length}`);
+}
+
+// Ручное указание HTML страниц в src/html
+function getHTMLPages() {
+  const htmlDir = 'src/html';
+  const pages = {};
+
+  htmlPagesCache.forEach((pageName) => {
+    const htmlPath = resolve(process.cwd(), `${htmlDir}/${pageName}.html`);
+    pages[pageName] = htmlPath;
+  });
+
+  return pages;
+}
+
+// Функция для поиска JS файлов из кеша
+function getJSEntries() {
+  const entries = {};
+  const jsDir = 'src/js';
+
+  jsFilesCache.forEach((name) => {
+    entries[`js/${name}`] = resolve(process.cwd(), `${jsDir}/${name}.js`);
+  });
+
+  return entries;
+}
+
+// Функция для поиска SCSS файлов из кеша
+function getSCSSEntries() {
+  const entries = {};
+
+  scssFilesCache.forEach(({ type, name }) => {
+    switch (type) {
+      case 'main':
+        entries['css/main'] = resolve(process.cwd(), 'src/scss/main.scss');
+        break;
+      case 'page':
+        entries[`css/${name}`] = resolve(process.cwd(), `src/scss/pages/${name}.scss`);
+        break;
+      case 'block':
+        entries[`css/blocks/${name}`] = resolve(
+          process.cwd(),
+          `src/scss/blocks/${name}.scss`,
+        );
+        break;
+    }
+  });
 
   return entries;
 }
@@ -140,6 +185,134 @@ function assetConverter() {
           }
         }
       }
+    },
+  };
+}
+
+// Плагин для автоматического обнаружения новых файлов
+function fileWatcherPlugin() {
+  const watchers = [];
+  const debounceTimers = new Map();
+
+  return {
+    name: "file-watcher",
+    buildStart() {
+      // Инициализируем кеш при старте
+      initializeFileCache();
+    },
+    configureServer(viteServer) {
+      // Функция для обновления кеша
+      const updateCache = (filePath, action) => {
+        const fileName = filePath.split("/").pop();
+        const baseName = fileName.replace(/\.(js|scss)$/, "");
+
+        if (filePath.includes("src/js") && fileName.endsWith(".js")) {
+          if (action === "add") {
+            if (!jsFilesCache.includes(baseName)) {
+              jsFilesCache.push(baseName);
+              console.log(`➕ JS файл добавлен в кеш: ${baseName}`);
+            }
+          } else if (action === "unlink") {
+            jsFilesCache = jsFilesCache.filter((name) => name !== baseName);
+            console.log(`➖ JS файл удален из кеша: ${baseName}`);
+          }
+        }
+
+        if (filePath.includes("src/scss") && fileName.endsWith(".scss")) {
+          if (action === "add") {
+            let type = "main";
+            if (filePath.includes("src/scss/pages")) type = "page";
+            if (filePath.includes("src/scss/blocks")) type = "block";
+
+            const exists = scssFilesCache.some(
+              (item) => item.name === baseName && item.type === type,
+            );
+
+            if (!exists) {
+              scssFilesCache.push({ type, name: baseName });
+              console.log(`➕ SCSS файл добавлен в кеш: ${type}/${baseName}`);
+            }
+          } else if (action === "unlink") {
+            scssFilesCache = scssFilesCache.filter(
+              (item) => item.name !== baseName,
+            );
+            console.log(`➖ SCSS файл удален из кеша: ${baseName}`);
+          }
+        }
+      };
+
+      // Debounced функция для обработки файловых событий
+      const handleFileEvent = (filePath, eventType) => {
+        // Очищаем предыдущий таймер для этого файла
+        if (debounceTimers.has(filePath)) {
+          clearTimeout(debounceTimers.get(filePath));
+        }
+
+        // Устанавливаем новый таймер
+        const timer = setTimeout(() => {
+          console.log(`📁 ${eventType}: ${filePath}`);
+
+          if (eventType === "rename") {
+            // rename событие может означать как добавление, так и удаление
+            if (existsSync(filePath)) {
+              updateCache(filePath, "add");
+            } else {
+              updateCache(filePath, "unlink");
+            }
+
+            // Обновляем браузер без перезапуска сервера
+            console.log("🔄 Обновление браузера...");
+            viteServer.ws.send({
+              type: "full-reload",
+            });
+          }
+
+          // Удаляем таймер из Map
+          debounceTimers.delete(filePath);
+        }, 100); // 100ms задержка для группировки событий
+
+        debounceTimers.set(filePath, timer);
+      };
+
+      // Настройка fs.watch для отслеживания директорий
+      const watchDirectories = ["src/js", "src/scss/pages", "src/scss/blocks"];
+
+      watchDirectories.forEach((dir) => {
+        if (existsSync(dir)) {
+          console.log(`👀 Отслеживаю директорию: ${dir}`);
+
+          const watcher = watch(
+            dir,
+            { recursive: true },
+            (eventType, filename) => {
+              if (!filename) return;
+
+              const filePath = `${dir}/${filename}`;
+              const isJsFile = filename.endsWith(".js");
+              const isScssFile = filename.endsWith(".scss");
+
+              if (isJsFile || isScssFile) {
+                handleFileEvent(filePath, eventType);
+              }
+            },
+          );
+
+          watchers.push(watcher);
+        }
+      });
+
+      // Закрытие watchers при завершении
+      viteServer.httpServer?.on("close", () => {
+        // Очищаем все таймеры
+        debounceTimers.forEach((timer) => clearTimeout(timer));
+        debounceTimers.clear();
+
+        watchers.forEach((watcher) => {
+          if (watcher) {
+            watcher.close();
+          }
+        });
+      });
     },
   };
 }
@@ -222,6 +395,7 @@ export default defineConfig(({ command, mode }) => {
         },
       },
       assetConverter(),
+      fileWatcherPlugin(),
     ].filter(Boolean),
     css: {
       preprocessorOptions: {
