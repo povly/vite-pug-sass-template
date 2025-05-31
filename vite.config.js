@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite'
 import pug from 'vite-plugin-pug'
 import autoprefixer from 'autoprefixer'
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import { resolve } from 'path'
 import { readdirSync, existsSync, copyFileSync, unlinkSync, rmSync } from 'fs'
+import { execSync } from 'child_process'
 
 // Ручное указание HTML страниц в src/html
 function getHTMLPages() {
@@ -75,27 +77,46 @@ function getSCSSEntries() {
   return entries
 }
 
-// Функция для конвертации шрифтов
-function fontConverter() {
+// Функция для конвертации шрифтов и изображений
+function assetConverter() {
   return {
-    name: 'font-converter',
+    name: 'asset-converter',
     buildStart() {
+      // Конвертация шрифтов
       const fontsDir = 'src/fonts'
-      if (!existsSync(fontsDir)) return
+      if (existsSync(fontsDir)) {
+        const fontFiles = readdirSync(fontsDir, { recursive: true }).filter(file =>
+          typeof file === 'string' && (file.endsWith('.ttf') || file.endsWith('.otf'))
+        )
 
-      const fontFiles = readdirSync(fontsDir).filter(file =>
-        file.endsWith('.ttf') || file.endsWith('.otf')
-      )
+        if (fontFiles.length > 0) {
+          console.log(`🔄 Converting ${fontFiles.length} font(s) during build...`)
+          try {
+            execSync('node scripts/convert-fonts.js', { stdio: 'inherit' })
+          } catch (error) {
+            console.error('Font conversion failed:', error.message)
+          }
+        }
+      }
 
-      if (fontFiles.length > 0) {
-        console.log(`🔄 Converting ${fontFiles.length} font(s) during build...`)
+      // Конвертация изображений
+      const imagesDir = 'src/images'
+      if (existsSync(imagesDir)) {
+        const imageFiles = readdirSync(imagesDir, { recursive: true }).filter(file => {
+          if (typeof file !== 'string') return false
+          const ext = file.toLowerCase()
+          return ext.endsWith('.jpg') || ext.endsWith('.jpeg') || ext.endsWith('.png') ||
+                 ext.endsWith('.webp') || ext.endsWith('.gif') || ext.endsWith('.bmp') ||
+                 ext.endsWith('.tiff')
+        })
 
-        // Запускаем скрипт конвертации
-        try {
-          const { execSync } = require('child_process')
-          execSync('node scripts/convert-fonts.js', { stdio: 'inherit' })
-        } catch (error) {
-          console.error('Font conversion failed:', error.message)
+        if (imageFiles.length > 0) {
+          console.log(`🖼️  Converting ${imageFiles.length} image(s) during build...`)
+          try {
+            execSync('node scripts/convert-images.js', { stdio: 'inherit' })
+          } catch (error) {
+            console.error('Image conversion failed:', error.message)
+          }
         }
       }
     }
@@ -112,6 +133,37 @@ export default defineConfig(({ command, mode }) => {
       }, {
         title: 'Vite App',
         isDev: isDev
+      }),
+      // Оптимизация изображений в production
+      !isDev && ViteImageOptimizer({
+        jpg: {
+          quality: 90,
+          progressive: true
+        },
+        jpeg: {
+          quality: 90,
+          progressive: true
+        },
+        png: {
+          quality: 90,
+          compressionLevel: 9
+        },
+        webp: {
+          quality: 85,
+          effort: 4
+        },
+        avif: {
+          quality: 80,
+          effort: 4
+        },
+        svg: {
+          plugins: [
+            { name: 'removeViewBox', active: false },
+            { name: 'removeDimensions', active: true },
+            { name: 'removeComments', active: true },
+            { name: 'removeUselessStrokeAndFill', active: true }
+          ]
+        }
       }),
       // Кастомный плагин для перемещения HTML файлов в корень build
       {
@@ -142,8 +194,8 @@ export default defineConfig(({ command, mode }) => {
           }
         }
       },
-      fontConverter()
-    ],
+      assetConverter()
+    ].filter(Boolean),
     css: {
       preprocessorOptions: {
         scss: {

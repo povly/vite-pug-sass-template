@@ -7,16 +7,21 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "convert-fonts": "node scripts/convert-fonts.js"
+    "convert-fonts": "node scripts/convert-fonts.js",
+    "convert-images": "node scripts/convert-images.js",
+    "convert-assets": "npm run convert-fonts && npm run convert-images"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "sass-embedded": "^1.69.0",
+    "sharp": "^0.34.2",
+    "svgo": "^3.3.2",
     "terser": "^5.24.0",
     "ttf2woff": "^3.0.0",
     "ttf2woff2": "^4.0.5",
     "vite": "^5.0.0",
+    "vite-plugin-image-optimizer": "^1.1.8",
     "vite-plugin-pug": "^0.4.1"
   },
   "browserslist": [

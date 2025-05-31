@@ -2,6 +2,7 @@ extends ../layout/base
 
 //- Include mixins
 include ../mixins/button
+include ../mixins/picture
 
 block variables
   - var title = "Главная - ViteApp"
@@ -19,15 +20,33 @@ block content
 
       +button('Демо', 'primary', 'large', '', {class: 'demo-button'})
 
+      //- Пример hero изображения (когда появятся файлы)
+      //- +hero('hero-mobile.jpg', 'hero-tablet.jpg', 'hero-desktop.jpg', 'Hero изображение', 'hero__image')
+
     section.features
       .features__card
         h3 Современный CSS
         p Grid, Flexbox, переменные с автоматическими префиксами
+        //- Пример простого изображения
+        //- +picture('feature-css.jpg', 'CSS Feature', 'feature__image')
 
       .features__card
         h3 ES6+ JavaScript
         p Современный JS с транспиляцией для старых браузеров
+        //- Пример изображения с размерами
+        //- +picture('feature-js.jpg', 'JavaScript Feature', 'feature__image', 'lazy', '(max-width: 768px) 100vw, 33vw')
 
       .features__card
         h3 Оптимизация
         p Минификация, сжатие и оптимизация для продакшена
+        //- Пример фонового изображения через CSS переменные
+        //- +backgroundImage('feature-optimization.jpg', 'feature__background')
+
+    //- Пример секции с изображениями (раскомментировать когда появятся файлы)
+    //- section.gallery
+    //-   h2 Примеры оптимизированных изображений
+    //-   .gallery__grid
+    //-     +picture('gallery-1.jpg', 'Пример 1', 'gallery__item')
+    //-     +picture('gallery-2.jpg', 'Пример 2', 'gallery__item')
+    //-     +picture('gallery-3.jpg', 'Пример 3', 'gallery__item')
+    //-     +img('simple-image.jpg', 'Простое изображение', 'gallery__simple')

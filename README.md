@@ -13,6 +13,7 @@
 - 🧩 **Блоки** - модульная система стилей
 - 🌐 **Кроссбраузерность** - поддержка старых браузеров
 - 🔤 **Конвертация шрифтов** - автоматическая конвертация TTF/OTF в WOFF/WOFF2
+- 🖼️ **Оптимизация изображений** - автоматическая конвертация в AVIF, WebP с оптимизацией
 
 ## Установка
 
@@ -34,6 +35,12 @@ npm run preview
 
 # Конвертация шрифтов
 npm run convert-fonts
+
+# Конвертация изображений
+npm run convert-images
+
+# Конвертация всех ассетов
+npm run convert-assets
 ```
 
 ## Структура проекта
@@ -50,10 +57,13 @@ npm run convert-fonts
 │   │   │   ├── header.pug
 │   │   │   └── footer.pug
 │   │   └── mixins/          # Pug миксины
-│   │       └── button.pug
+│   │       ├── button.pug
+│   │       └── picture.pug  # Миксины для изображений
 │   ├── scss/
 │   │   ├── main.scss        # Главные стили
 │   │   ├── _fonts.scss      # Автогенерируемые шрифты
+│   │   ├── mixins/          # SCSS миксины
+│   │   │   └── _images.scss # Миксины для изображений
 │   │   ├── pages/           # Стили страниц
 │   │   │   ├── index.scss
 │   │   │   └── about.scss
@@ -65,6 +75,14 @@ npm run convert-fonts
 │   │   └── roboto/          # Группировка по семействам
 │   │       ├── Roboto-Regular.ttf
 │   │       └── Roboto-Light.ttf
+│   ├── images/              # Исходные изображения
+│   │   ├── hero/            # Группировка по разделам
+│   │   │   ├── hero-desktop.jpg
+│   │   │   ├── hero-tablet.jpg
+│   │   │   └── hero-mobile.jpg
+│   │   └── gallery/
+│   │       ├── image-1.jpg
+│   │       └── image-2.png
 │   └── js/
 │       ├── main.js          # Общий JavaScript
 │       ├── index.js         # JS главной страницы
@@ -76,9 +94,25 @@ npm run convert-fonts
 │   │       ├── Roboto-Regular.woff
 │   │       ├── Roboto-Light.woff2
 │   │       └── Roboto-Light.woff
+│   ├── images/              # Оптимизированные изображения
+│   │   ├── hero/            # Структура сохраняется
+│   │   │   ├── hero-desktop.avif
+│   │   │   ├── hero-desktop.webp
+│   │   │   ├── hero-desktop.jpg
+│   │   │   ├── hero-tablet.avif
+│   │   │   ├── hero-tablet.webp
+│   │   │   └── hero-tablet.jpg
+│   │   └── gallery/
+│   │       ├── image-1.avif
+│   │       ├── image-1.webp
+│   │       ├── image-1.jpg
+│   │       ├── image-2.avif
+│   │       ├── image-2.webp
+│   │       └── image-2.png
 │   └── vite.svg
 ├── scripts/
-│   └── convert-fonts.js     # Скрипт конвертации шрифтов
+│   ├── convert-fonts.js     # Скрипт конвертации шрифтов
+│   └── convert-images.js    # Скрипт конвертации изображений
 ├── vite.config.js           # Конфигурация Vite
 └── package.json
 ```
@@ -105,6 +139,8 @@ build/
         ├── Roboto-Regular.woff2
         ├── Roboto-Light.woff
         └── Roboto-Light.woff2
+├── images/              # Оптимизированные изображения
+│   └── ...              # Все форматы: AVIF, WebP, оригинал
 └── js/
     ├── main.js             # Общий JS
     ├── index.js            # JS главной
@@ -145,6 +181,90 @@ Vite автоматически найдет и добавит новые фай
 
 Подробнее: [FONTS.md](FONTS.md)
 
+## Работа с изображениями
+
+### Быстрый старт
+1. **Добавить изображения**: поместить JPG/PNG/WebP файлы в `src/images/`
+2. **Конвертировать**: `npm run convert-images`
+3. **Использовать миксины**: подключить `include ../mixins/picture` в Pug
+
+### Организация изображений
+- Группируйте по разделам: `src/images/hero/`, `src/images/gallery/`
+- Структура папок сохраняется в `public/images/`
+- Автоматическое создание всех форматов
+
+### Форматы и оптимизация
+- **Входные**: JPG, JPEG, PNG, WebP, TIFF, GIF, BMP
+- **Выходные**:
+  - AVIF (лучшее сжатие, 80% качество)
+  - WebP (широкая поддержка, 85% качество)
+  - Оптимизированный оригинал (90% качество)
+- **Поддержка браузеров**: AVIF (90%+), WebP (96%+), оригинал (100%)
+
+### Использование в Pug
+
+```pug
+//- Подключить миксины
+include ../mixins/picture
+
+//- Адаптивное изображение с автовыбором формата
++picture('hero.jpg', 'Описание', 'hero__image', 'lazy', '100vw')
+
+//- Простое изображение
++img('logo.png', 'Логотип', 'header__logo')
+
+//- Hero с разными размерами для устройств
++hero('hero-mobile.jpg', 'hero-tablet.jpg', 'hero-desktop.jpg', 'Hero', 'hero__bg')
+
+//- Фоновое изображение через CSS переменные
++backgroundImage('pattern.jpg', 'section__background')
+  p Контент поверх фона
+```
+
+### Использование в SCSS
+
+```scss
+//- Подключить миксины
+@import 'mixins/images';
+
+//- Фоновое изображение с автовыбором формата
+.hero {
+  @include background-image('hero.jpg');
+  @include image-cover;
+}
+
+//- Адаптивные фоны
+.banner {
+  @include responsive-background(
+    'banner-mobile.jpg',
+    'banner-tablet.jpg',
+    'banner-desktop.jpg'
+  );
+}
+
+//- Фон через CSS переменные (с Pug миксином)
+.section {
+  @include bg-with-vars;
+  @include image-cover;
+}
+
+//- Lazy loading фон
+.gallery-item {
+  @include lazy-background('gallery-item.jpg');
+}
+
+//- Оптимизация изображений в блоке
+.card {
+  @include optimized-image;
+}
+```
+
+### Автоматическая оптимизация
+- **При разработке**: изображения используются как есть
+- **При сборке**: автоматическая конвертация и оптимизация
+- **Плагин Vite**: дополнительная оптимизация в production
+- **Lazy loading**: автоматическая поддержка отложенной загрузки
+
 ## Поддерживаемые браузеры
 
 - Chrome/Edge 80+
@@ -158,14 +278,18 @@ Vite автоматически найдет и добавит новые фай
 - Автоматический поиск страниц в `src/pug/pages/`
 - Автоматическая компиляция SCSS из `src/scss/pages/` и `src/scss/blocks/`
 - Автоматическое подключение JS из `src/js/`
+- Автоматическая конвертация шрифтов и изображений при сборке
 
 ### Оптимизация
 - Минификация CSS и JS
 - Удаление console.log в продакшене
 - Автоматические префиксы
 - Tree-shaking неиспользуемого кода
+- Оптимизация изображений (AVIF, WebP, сжатие)
+- Современные форматы изображений с fallback
 
 ### Кроссбраузерность
 - Legacy plugin для старых браузеров
 - Полифиллы для ES6+ функций
 - Fallback для современных CSS функций
+- Поддержка старых форматов изображений
