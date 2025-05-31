@@ -43,7 +43,8 @@
     "ttf2woff2": "^4.0.5",
     "vite": "^5.0.0",
     "vite-plugin-image-optimizer": "^1.1.8",
-    "vite-plugin-pug": "^0.4.1"
+    "vite-plugin-pug": "^0.4.1",
+    "vite-plugin-live-reload": "^3.0.4"
   },
   "browserslist": [
     "> 1%",
