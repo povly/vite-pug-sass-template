@@ -241,6 +241,7 @@ src/fonts/
 ### Automatic Conversion
 
 The conversion happens automatically when:
+
 - Running `npm run build`
 - Files change in `src/fonts/` during development
 - New fonts are added to the project
@@ -248,6 +249,7 @@ The conversion happens automatically when:
 ### Build Output
 
 After build, fonts are available at:
+
 - `/fonts/family-name/Font-Weight.woff2`
 - `/fonts/family-name/Font-Weight.woff`
 

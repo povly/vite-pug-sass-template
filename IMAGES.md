@@ -43,28 +43,30 @@ npm run convert-images
 ### Recommended Structure
 
 ```
+
 src/images/
-├── hero/                    # Hero sections
-│   ├── hero-desktop.jpg     # 1920x1080 or larger
-│   ├── hero-tablet.jpg      # 1024x768
-│   └── hero-mobile.jpg      # 375x667
-├── gallery/                 # Galleries
-│   ├── gallery-1.jpg
-│   ├── gallery-2.jpg
-│   └── gallery-3.png
-├── icons/                   # Icons and logos
-│   ├── logo.svg
-│   ├── icon-phone.png
-│   └── social-facebook.png
-├── backgrounds/             # Background images
-│   ├── pattern.png
-│   ├── texture.jpg
-│   └── gradient-overlay.png
-└── content/                # Content images
-    ├── article-image.jpg
-    ├── product-photo.jpg
-    └── team-member.jpg
-```
+├── hero/ # Hero sections
+│ ├── hero-desktop.jpg # 1920x1080 or larger
+│ ├── hero-tablet.jpg # 1024x768
+│ └── hero-mobile.jpg # 375x667
+├── gallery/ # Galleries
+│ ├── gallery-1.jpg
+│ ├── gallery-2.jpg
+│ └── gallery-3.png
+├── icons/ # Icons and logos
+│ ├── logo.svg
+│ ├── icon-phone.png
+│ └── social-facebook.png
+├── backgrounds/ # Background images
+│ ├── pattern.png
+│ ├── texture.jpg
+│ └── gradient-overlay.png
+└── content/ # Content images
+├── article-image.jpg
+├── product-photo.jpg
+└── team-member.jpg
+
+````
 
 
 ### Hero Images
@@ -72,8 +74,7 @@ src/images/
 ```pug
 //- Different images for different devices
 +hero('hero-mobile.jpg', 'hero-tablet.jpg', 'hero-desktop.jpg', 'Main image', 'hero__bg')
-```
-
+````
 
 ### Image Optimization Tips
 
@@ -86,12 +87,11 @@ src/images/
 ## Browser Support
 
 | Format | Chrome | Firefox | Safari | Edge | IE  |
-|--------|--------|---------|--------|------|-----|
-| AVIF   | 85+    | 93+     | 16.1+  | 93+  | ❌   |
-| WebP   | 23+    | 65+     | 14+    | 18+  | ❌   |
-| JPEG   | ✅      | ✅       | ✅      | ✅    | ✅   |
-| PNG    | ✅      | ✅       | ✅      | ✅    | ✅   |
-
+| ------ | ------ | ------- | ------ | ---- | --- |
+| AVIF   | 85+    | 93+     | 16.1+  | 93+  | ❌  |
+| WebP   | 23+    | 65+     | 14+    | 18+  | ❌  |
+| JPEG   | ✅     | ✅      | ✅     | ✅   | ✅  |
+| PNG    | ✅     | ✅      | ✅     | ✅   | ✅  |
 
 ## Troubleshooting
 

@@ -249,6 +249,7 @@ npm run format:css    # Format CSS/SCSS
 ### Editor Integration
 
 For VS Code, install these extensions:
+
 - ESLint
 - Stylelint
 - Prettier - Code formatter
@@ -294,11 +295,7 @@ Read more: [LINTING.md](LINTING.md)
 
 ```json
 {
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"]
 }
 ```
 
@@ -365,6 +362,7 @@ npm cache clean --force   # Clear npm cache
 ```
 
 For specific issues, check the detailed guides:
+
 - [Images troubleshooting](IMAGES.md#troubleshooting)
 - [Fonts troubleshooting](FONTS.md#troubleshooting)
 - [Linting issues](LINTING.md#troubleshooting)
