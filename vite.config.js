@@ -33,16 +33,29 @@ function getHTMLPages() {
 
 // Функция для поиска JS файлов
 function getJSEntries() {
-  const jsDir = 'src/js';
-  if (!existsSync(jsDir)) return {};
-
-  const jsFiles = readdirSync(jsDir).filter((file) => file.endsWith('.js'));
   const entries = {};
 
-  jsFiles.forEach((file) => {
-    const name = file.replace('.js', '');
-    entries[`js/${name}`] = resolve(process.cwd(), `${jsDir}/${file}`);
-  });
+  // Основные JS файлы
+  const jsDir = 'src/js';
+  if (existsSync(jsDir)) {
+    const jsFiles = readdirSync(jsDir).filter((file) => file.endsWith('.js'));
+    jsFiles.forEach((file) => {
+      const name = file.replace('.js', '');
+      entries[`js/${name}`] = resolve(process.cwd(), `${jsDir}/${file}`);
+    });
+  }
+
+  // Библиотеки
+  const libsDir = 'src/libs';
+  if (existsSync(libsDir)) {
+    const libFiles = readdirSync(libsDir).filter((file) =>
+      file.endsWith('.js')
+    );
+    libFiles.forEach((file) => {
+      const name = file.replace('.js', '');
+      entries[`libs/${name}`] = resolve(process.cwd(), `${libsDir}/${file}`);
+    });
+  }
 
   return entries;
 }
