@@ -51,7 +51,9 @@ html(lang='ru')
 
     //- Page-specific JavaScript
     if pageJs
-      if isDev
-        script(type='module', src=`/src/js/${pageJs}.js`)
-      else
-        script(type='module', src=`js/${pageJs}.js`)
+      each script in pageJs
+        if isDev
+          script(type='module', src=`/src/js/${script}.js`)
+        else
+          script(type='module', src=`js/${script}.js`)
+
