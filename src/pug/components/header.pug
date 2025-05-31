@@ -1,0 +1,15 @@
+header.header
+  .header__container
+    a.header__logo(href="/") ViteApp
+
+    nav
+      ul.header__nav
+        li
+          a.header__link(href="/", class=currentPage === 'index' ? 'header__link--active' : '') Главная
+        li
+          a.header__link(href="/about.html", class=currentPage === 'about' ? 'header__link--active' : '') О нас
+
+    button.header__toggle(aria-label="Открыть меню")
+      span
+      span
+      span

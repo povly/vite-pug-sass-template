@@ -1,0 +1,33 @@
+extends ../layout/base
+
+//- Include mixins
+include ../mixins/button
+
+block variables
+  - var title = "Главная - ViteApp"
+  - var description = "Современный шаблон на Vite с поддержкой Pug, Sass и кроссбраузерности"
+  - var pageCss = "index"
+  - var pageJs = "index"
+  - var blocks = ["header", "button"]
+  - var currentPage = "index"
+
+block content
+  .container
+    section.hero
+      h1.hero__title Vite + Pug + Sass
+      p.hero__subtitle Современный шаблон для разработки с полной кроссбраузерной поддержкой
+
+      +button('Демо', 'primary', 'large', '', {class: 'demo-button'})
+
+    section.features
+      .features__card
+        h3 Современный CSS
+        p Grid, Flexbox, переменные с автоматическими префиксами
+
+      .features__card
+        h3 ES6+ JavaScript
+        p Современный JS с транспиляцией для старых браузеров
+
+      .features__card
+        h3 Оптимизация
+        p Минификация, сжатие и оптимизация для продакшена

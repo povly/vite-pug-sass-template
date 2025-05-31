@@ -1,0 +1,7 @@
+mixin button(text, type = 'primary', size = '', href = '', attributes = {})
+  - const classes = ['btn', `btn--${type}`, size ? `btn--${size}` : ''].filter(Boolean).join(' ')
+
+  if href
+    a(href=href, class=classes)&attributes(attributes)= text
+  else
+    button(class=classes)&attributes(attributes)= text

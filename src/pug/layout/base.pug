@@ -1,0 +1,54 @@
+doctype html
+html(lang="ru")
+  head
+    block variables
+
+    meta(charset="UTF-8")
+    link(rel="icon", type="image/svg+xml", href="/vite.svg")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+
+    title #{title || 'Vite App'}
+    meta(name="description", content=description || "Vite app with Pug, Sass and cross-browser support")
+
+    //- Main CSS will be injected by Vite
+    if isDev
+      link(rel="stylesheet", href="/src/scss/main.scss")
+    else
+      link(rel="stylesheet", href="css/main.css")
+
+    //- Page-specific CSS
+    if pageCss
+      if isDev
+        link(rel="stylesheet", href=`/src/scss/pages/${pageCss}.scss`)
+      else
+        link(rel="stylesheet", href=`css/${pageCss}.css`)
+
+    //- Block CSS
+    if blocks
+      each block in blocks
+        if isDev
+          link(rel="stylesheet", href=`/src/scss/blocks/${block}.scss`)
+        else
+          link(rel="stylesheet", href=`css/blocks/${block}.css`)
+
+  body
+    include ../components/header
+
+    main.main
+      block content
+
+    include ../components/footer
+
+    //- Main JavaScript
+    if isDev
+      script(type="module", src="/src/js/main.js")
+    else
+      script(type="module", src="js/main.js")
+
+    //- Page-specific JavaScript
+    if pageJs
+      if isDev
+        script(type="module", src=`/src/js/${pageJs}.js`)
+      else
+        script(type="module", src=`js/${pageJs}.js`)

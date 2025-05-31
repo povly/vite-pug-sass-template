@@ -1,0 +1,56 @@
+extends ../layout/base
+
+//- Include mixins
+include ../mixins/button
+
+block variables
+  - var title = "О нас - ViteApp"
+  - var description = "Узнайте больше о нашем шаблоне Vite с Pug и Sass"
+  - var pageCss = "about"
+  - var pageJs = "about"
+  - var blocks = ["header", "button"]
+  - var currentPage = "about"
+
+block content
+  .container
+    section.about__header
+      h1 О нашем шаблоне
+      p Полнофункциональный шаблон для современной веб-разработки с поддержкой всех основных технологий и кроссбраузерностью.
+
+    .about__content
+      .about__section
+        h2 Технологии
+        p Мы используем самые современные и проверенные технологии:
+        ul
+          li Vite для быстрой сборки
+          li Pug для удобной разметки
+          li Sass-embed для стилей
+          li Autoprefixer для совместимости
+          li Legacy plugin для старых браузеров
+
+      .about__section
+        h2 Возможности
+        p Шаблон предоставляет все необходимое для разработки:
+        ul
+          li Multi-page приложения
+          li Раздельная компиляция SCSS и JS
+          li Модульная система блоков
+          li Автоматическая оптимизация
+          li Кроссбраузерная поддержка
+
+    section.stats
+      .stats__item
+        span.stats__item-number(data-target="5") 5
+        span.stats__item-label Технологий
+
+      .stats__item
+        span.stats__item-number(data-target="100") 100
+        span.stats__item-label % Совместимость
+
+      .stats__item
+        span.stats__item-number(data-target="3") 3
+        span.stats__item-label Секунды сборки
+
+      .stats__item
+        span.stats__item-number(data-target="99") 99
+        span.stats__item-label % Оптимизация
