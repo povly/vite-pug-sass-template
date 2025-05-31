@@ -1,18 +1,27 @@
-# 🔤 Конвертация шрифтов
+# 🔤 Font Conversion
 
-Автоматическая конвертация TTF/OTF шрифтов в веб-форматы WOFF/WOFF2 с сохранением структуры папок.
+## 📚 Documentation
 
-## 🚀 Быстрый старт
+- [📋 Main README](README.md) - Project overview and setup
+- [🖼️ Images Guide](IMAGES.md) - Image processing and optimization
+- [📝 **Fonts Guide**](FONTS.md) - Font management and conversion (current)
+- [🔧 Linting & Formatting](LINTING.md) - Code quality tools
 
-### 1. Установка зависимостей
+---
+
+Automatic conversion of TTF/OTF fonts to web formats WOFF/WOFF2 while preserving folder structure.
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
 
 ```bash
 npm install ttf2woff ttf2woff2 --save-dev
 ```
 
-### 2. Добавление шрифтов
+### 2. Add Fonts
 
-Поместите TTF/OTF файлы в `src/fonts/`:
+Place TTF/OTF files in `src/fonts/`:
 
 ```
 src/fonts/
@@ -25,31 +34,31 @@ src/fonts/
     └── OpenSans-Bold.ttf
 ```
 
-### 3. Конвертация
+### 3. Convert
 
 ```bash
 npm run convert-fonts
 ```
 
-### 4. Подключение в SCSS
+### 4. Include in SCSS
 
 ```scss
 // src/scss/main.scss
 @import 'fonts';
 
-// Использование
+// Usage
 .title {
   font-family: 'roboto', Arial, sans-serif;
 }
 ```
 
-## 📁 Структура после конвертации
+## 📁 Structure After Conversion
 
 ```
 public/fonts/
 ├── roboto/
-│   ├── Roboto-Regular.woff2   # ~50% меньше TTF
-│   ├── Roboto-Regular.woff    # ~30% меньше TTF
+│   ├── Roboto-Regular.woff2   # ~50% smaller than TTF
+│   ├── Roboto-Regular.woff    # ~30% smaller than TTF
 │   ├── Roboto-Bold.woff2
 │   ├── Roboto-Bold.woff
 │   ├── Roboto-Light.woff2
@@ -61,12 +70,12 @@ public/fonts/
     └── OpenSans-Bold.woff
 
 src/scss/
-└── _fonts.scss                # Автогенерируемый файл
+└── _fonts.scss                # Auto-generated file
 ```
 
-## 🎯 Автогенерируемый CSS
+## 🎯 Auto-Generated CSS
 
-Скрипт создает `src/scss/_fonts.scss` с готовыми `@font-face` декларациями:
+The script creates `src/scss/_fonts.scss` with ready-to-use `@font-face` declarations:
 
 ```scss
 @font-face {
@@ -94,67 +103,180 @@ src/scss/
 }
 ```
 
-## ⚙️ Особенности
+## ⚙️ Features
 
-### Автоматическая сборка
+### Automatic Build
 
-- Шрифты конвертируются автоматически при `npm run build`
-- Плагин в `vite.config.js` запускает конвертацию
-- Рекурсивный поиск в подпапках
+- Fonts are converted automatically during `npm run build`
+- Plugin in `vite.config.js` triggers conversion
+- Recursive search in subfolders
 
-### Оптимизация
+### Optimization
 
-- **WOFF2**: лучшее сжатие, поддержка 95% браузеров
-- **WOFF**: fallback для старых браузеров
-- **font-display: swap**: улучшенная производительность
+- **WOFF2**: best compression, 95% browser support
+- **WOFF**: fallback for older browsers
+- **font-display: swap**: improved performance
 
-### Именование семейств
+### Family Naming
 
-- Имя папки = `font-family`
-- Пример: `src/fonts/roboto/` → `font-family: 'roboto'`
-- Поддержка любых имен папок
+- Folder name = `font-family`
+- Example: `src/fonts/roboto/` → `font-family: 'roboto'`
+- Supports any folder names
 
-## 🌐 Поддержка браузеров
+## 🌐 Browser Support
 
-| Формат | Chrome | Firefox | Safari | Edge | IE  |
+| Format | Chrome | Firefox | Safari | Edge | IE  |
 | ------ | ------ | ------- | ------ | ---- | --- |
 | WOFF2  | 36+    | 39+     | 12+    | 14+  | ❌  |
 | WOFF   | 6+     | 3.6+    | 5.1+   | 12+  | 9+  |
 
-## 🚨 Решение проблем
+## 🚨 Troubleshooting
 
-### Шрифты не загружаются в dev режиме
+### Fonts Not Loading in Dev Mode
 
 ```scss
-// Проверьте пути в _fonts.scss
-src: url('/fonts/...')  ✅ (правильно)
-src: url('./fonts/...') ❌ (неправильно в dev)
+// Check paths in _fonts.scss
+src: url('/fonts/...')  ✅ (correct)
+src: url('./fonts/...') ❌ (incorrect in dev)
 ```
 
-### Ошибки конвертации
+### Conversion Errors
 
 ```bash
-# Проверьте формат входных файлов
+# Check input file format
 file src/fonts/font.ttf
-# Должно показать: TrueType font data
+# Should show: TrueType font data
 
-# Переустановите зависимости
+# Reinstall dependencies
 npm install ttf2woff ttf2woff2 --save-dev
 ```
 
-## 📊 Сравнение размеров
+## 📊 Size Comparison
 
-| Шрифт Roboto Regular | Размер | Сжатие |
-| -------------------- | ------ | ------ |
-| TTF (исходный)       | 168 KB | -      |
-| WOFF                 | 83 KB  | 51%    |
-| WOFF2                | 64 KB  | 62%    |
+| Roboto Regular Font | Size   | Compression |
+| ------------------- | ------ | ----------- |
+| TTF (original)      | 168 KB | -           |
+| WOFF                | 83 KB  | 51%         |
+| WOFF2               | 64 KB  | 62%         |
 
-## 🔄 Автоматизация
+## 🔄 Automation
 
-### При каждой сборке
+### On Every Build
 
 ```javascript
-// vite.config.js уже настроен
-// Автоматический запуск при npm run build
+// vite.config.js is already configured
+// Automatic execution on npm run build
 ```
+
+## Advanced Usage
+
+### Custom Font Weights
+
+```scss
+// After conversion, use specific weights
+.heading {
+  font-family: 'roboto', sans-serif;
+  font-weight: 700; // Bold
+}
+
+.body-text {
+  font-family: 'roboto', sans-serif;
+  font-weight: 400; // Regular
+}
+
+.light-text {
+  font-family: 'roboto', sans-serif;
+  font-weight: 300; // Light
+}
+```
+
+### Font Loading Strategies
+
+```scss
+// Fallback fonts while loading
+.text {
+  font-family: 'roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-display: swap; // Already included in generated CSS
+}
+```
+
+### Performance Optimization
+
+```html
+<!-- Preload critical fonts in HTML head -->
+<link rel="preload" href="/fonts/roboto/Roboto-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/roboto/Roboto-Bold.woff2" as="font" type="font/woff2" crossorigin>
+```
+
+## Font Organization Tips
+
+### Recommended Structure
+
+```
+src/fonts/
+├── primary/              # Main brand font
+│   ├── Brand-Regular.ttf
+│   ├── Brand-Bold.ttf
+│   └── Brand-Light.ttf
+├── secondary/            # Secondary/accent font
+│   ├── Accent-Regular.ttf
+│   └── Accent-Bold.ttf
+├── system/               # System/UI fonts
+│   ├── System-Regular.ttf
+│   └── System-Medium.ttf
+└── display/              # Display/heading fonts
+    ├── Display-Regular.ttf
+    └── Display-Bold.ttf
+```
+
+### Best Practices
+
+1. **Limit font families**: Use 2-3 families maximum
+2. **Choose essential weights**: Regular and Bold are often sufficient
+3. **Consistent naming**: Use descriptive folder and file names
+4. **Group logically**: Organize by usage, not alphabetically
+5. **Test loading**: Verify fonts load correctly across devices
+
+## Performance Considerations
+
+### Loading Priority
+
+```scss
+// Critical fonts (above-the-fold content)
+@font-face {
+  font-family: 'primary';
+  src: url('/fonts/primary/Primary-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+// Non-critical fonts can use fallback
+@font-face {
+  font-family: 'display';
+  src: url('/fonts/display/Display-Bold.woff2') format('woff2');
+  font-display: optional; // Won't block render
+}
+```
+
+### Bundle Size Optimization
+
+1. **Use only needed weights**: Remove unused font files
+2. **Subset fonts**: Include only required characters (advanced)
+3. **Monitor bundle**: Check output size regularly
+4. **Consider system fonts**: Use OS defaults when appropriate
+
+## Integration with Build Process
+
+### Automatic Conversion
+
+The conversion happens automatically when:
+- Running `npm run build`
+- Files change in `src/fonts/` during development
+- New fonts are added to the project
+
+### Build Output
+
+After build, fonts are available at:
+- `/fonts/family-name/Font-Weight.woff2`
+- `/fonts/family-name/Font-Weight.woff`
+
+CSS is automatically generated and included in your SCSS build.

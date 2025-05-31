@@ -1,82 +1,97 @@
 # Vite Multi-Page Template
 
-Профессиональный шаблон для multi-page приложений с Pug, Sass-embed, autoprefixer и полной кроссбраузерной совместимостью.
+## 📚 Documentation
 
-## Возможности
+- [📋 **Main README**](README.md) - Project overview and setup (current)
+- [🖼️ Images Guide](IMAGES.md) - Image processing and optimization
+- [📝 Fonts Guide](FONTS.md) - Font management and conversion
+- [🔧 Linting & Formatting](LINTING.md) - Code quality tools
 
-- ⚡️ **Vite** - быстрая сборка и hot reload
-- 🎨 **Pug** - мощный шаблонизатор с компонентами и миксинами
-- 🎯 **Sass-embed** - современный CSS препроцессор
-- 🔧 **Autoprefixer** - автоматические вендорные префиксы
-- 🌐 **Multi-page** - поддержка нескольких страниц
-- 📦 **Модульность** - раздельная компиляция CSS и JS
-- 🧩 **Блоки** - модульная система стилей
-- 🌐 **Кроссбраузерность** - поддержка старых браузеров
-- 🔤 **Конвертация шрифтов** - автоматическая конвертация TTF/OTF в WOFF/WOFF2
-- 🖼️ **Оптимизация изображений** - автоматическая конвертация в AVIF, WebP с оптимизацией
+---
 
-## Установка
+Professional template for multi-page applications with Pug, Sass-embed, autoprefixer and full cross-browser compatibility.
+
+## Features
+
+- ⚡️ **Vite** - fast build and hot reload
+- 🎨 **Pug** - powerful templating engine with components and mixins
+- 🎯 **Sass-embed** - modern CSS preprocessor
+- 🔧 **Autoprefixer** - automatic vendor prefixes
+- 🌐 **Multi-page** - multiple pages support
+- 📦 **Modular** - separate CSS and JS compilation
+- 🧩 **Blocks** - modular style system
+- 🌐 **Cross-browser** - legacy browser support
+- 🔤 **Font conversion** - automatic TTF/OTF to WOFF/WOFF2 conversion
+- 🖼️ **Image optimization** - automatic conversion to AVIF, WebP with optimization
+- 🧹 **Code quality** - ESLint, Stylelint, Prettier, Pug-lint integration
+
+## Installation
 
 ```bash
 npm install
 ```
 
-## Запуск
+## Usage
 
 ```bash
-# Режим разработки
+# Development mode
 npm run dev
 
-# Сборка для продакшена
+# Production build
 npm run build
 
-# Предварительный просмотр сборки
+# Preview build
 npm run preview
 
-# Конвертация шрифтов
+# Convert fonts
 npm run convert-fonts
 
-# Конвертация изображений
+# Convert images
 npm run convert-images
 
-# Конвертация всех ассетов
+# Convert all assets
 npm run convert-assets
+
+# Code quality
+npm run lint              # Check all files
+npm run format           # Format all files
+npm run lint-staged      # Lint and format
 ```
 
-## Структура проекта
+## Project Structure
 
 ```
 ├── src/
 │   ├── pug/
-│   │   ├── pages/           # Страницы сайта
+│   │   ├── pages/           # Website pages
 │   │   │   ├── index.pug
 │   │   │   └── about.pug
-│   │   ├── layout/          # Базовые шаблоны
+│   │   ├── layout/          # Base templates
 │   │   │   └── base.pug
-│   │   ├── components/      # Компоненты
+│   │   ├── components/      # Components
 │   │   │   ├── header.pug
 │   │   │   └── footer.pug
-│   │   └── mixins/          # Pug миксины
+│   │   └── mixins/          # Pug mixins
 │   │       ├── button.pug
-│   │       └── picture.pug  # Миксины для изображений
+│   │       └── picture.pug  # Image mixins
 │   ├── scss/
-│   │   ├── main.scss        # Главные стили
-│   │   ├── _fonts.scss      # Автогенерируемые шрифты
-│   │   ├── mixins/          # SCSS миксины
-│   │   │   └── _images.scss # Миксины для изображений
-│   │   ├── pages/           # Стили страниц
+│   │   ├── main.scss        # Main styles
+│   │   ├── _fonts.scss      # Auto-generated fonts
+│   │   ├── mixins/          # SCSS mixins
+│   │   │   └── _images.scss # Image mixins
+│   │   ├── pages/           # Page styles
 │   │   │   ├── index.scss
 │   │   │   └── about.scss
-│   │   └── blocks/          # Стили блоков
+│   │   └── blocks/          # Block styles
 │   │       ├── header.scss
 │   │       ├── footer.scss
 │   │       └── button.scss
-│   ├── fonts/               # Исходные шрифты (TTF/OTF)
-│   │   └── roboto/          # Группировка по семействам
+│   ├── fonts/               # Source fonts (TTF/OTF)
+│   │   └── roboto/          # Group by families
 │   │       ├── Roboto-Regular.ttf
 │   │       └── Roboto-Light.ttf
-│   ├── images/              # Исходные изображения
-│   │   ├── hero/            # Группировка по разделам
+│   ├── images/              # Source images
+│   │   ├── hero/            # Group by sections
 │   │   │   ├── hero-desktop.jpg
 │   │   │   ├── hero-tablet.jpg
 │   │   │   └── hero-mobile.jpg
@@ -84,18 +99,18 @@ npm run convert-assets
 │   │       ├── image-1.jpg
 │   │       └── image-2.png
 │   └── js/
-│       ├── main.js          # Общий JavaScript
-│       ├── index.js         # JS главной страницы
-│       └── about.js         # JS страницы about
+│       ├── main.js          # Common JavaScript
+│       ├── index.js         # Index page JS
+│       └── about.js         # About page JS
 ├── public/
-│   ├── fonts/               # Конвертированные шрифты
-│   │   └── roboto/          # Структура сохраняется
+│   ├── fonts/               # Converted fonts
+│   │   └── roboto/          # Structure preserved
 │   │       ├── Roboto-Regular.woff2
 │   │       ├── Roboto-Regular.woff
 │   │       ├── Roboto-Light.woff2
 │   │       └── Roboto-Light.woff
-│   ├── images/              # Оптимизированные изображения
-│   │   ├── hero/            # Структура сохраняется
+│   ├── images/              # Optimized images
+│   │   ├── hero/            # Structure preserved
 │   │   │   ├── hero-desktop.avif
 │   │   │   ├── hero-desktop.webp
 │   │   │   ├── hero-desktop.jpg
@@ -111,195 +126,259 @@ npm run convert-assets
 │   │       └── image-2.png
 │   └── vite.svg
 ├── scripts/
-│   ├── convert-fonts.js     # Скрипт конвертации шрифтов
-│   └── convert-images.js    # Скрипт конвертации изображений
-├── vite.config.js           # Конфигурация Vite
+│   ├── convert-fonts.js     # Font conversion script
+│   └── convert-images.js    # Image conversion script
+├── vite.config.js           # Vite configuration
 └── package.json
 ```
 
-## Сборка
+## Build Output
 
-После выполнения `npm run build` создается структура:
+After running `npm run build`, the following structure is created:
 
 ```
 build/
-├── index.html               # Главная страница
-├── about.html               # Страница about
+├── index.html               # Main page
+├── about.html               # About page
 ├── css/
-│   ├── main.css            # Основные стили
-│   ├── index.css           # Стили главной
-│   ├── about.css           # Стили about
-│   └── blocks/             # Стили блоков
+│   ├── main.css            # Main styles
+│   ├── index.css           # Index styles
+│   ├── about.css           # About styles
+│   └── blocks/             # Block styles
 │       ├── header.css
 │       ├── footer.css
 │       └── button.css
-├── fonts/               # Исходные шрифты (Woff2/Woff)
-    └── roboto/          # Группировка по семействам
-        ├── Roboto-Regular.woff
-        ├── Roboto-Regular.woff2
-        ├── Roboto-Light.woff
-        └── Roboto-Light.woff2
-├── images/              # Оптимизированные изображения
-│   └── ...              # Все форматы: AVIF, WebP, оригинал
+├── fonts/                  # Web fonts (WOFF2/WOFF)
+│   └── roboto/             # Group by families
+│       ├── Roboto-Regular.woff
+│       ├── Roboto-Regular.woff2
+│       ├── Roboto-Light.woff
+│       └── Roboto-Light.woff2
+├── images/                 # Optimized images
+│   └── ...                 # All formats: AVIF, WebP, original
 └── js/
-    ├── main.js             # Общий JS
-    ├── index.js            # JS главной
-    └── about.js            # JS about
+    ├── main.js             # Common JS
+    ├── index.js            # Index JS
+    └── about.js            # About JS
 ```
 
-## Добавление новых страниц
+## Adding New Pages
 
-1. **Создать Pug файл**: `src/pug/pages/newpage.pug`
-2. **Создать стили**: `src/scss/pages/newpage.scss`
-3. **Создать JS**: `src/js/newpage.js`
-4. **Добавить ссылку** в header.pug
+1. **Create Pug file**: `src/pug/pages/newpage.pug`
+2. **Create styles**: `src/scss/pages/newpage.scss`
+3. **Create JS**: `src/js/newpage.js`
+4. **Add link** in header.pug
 
-Vite автоматически найдет и добавит новые файлы в сборку.
+Vite automatically discovers and includes new files in the build.
 
-## Создание блоков
+## Creating Blocks
 
-1. **Создать SCSS**: `src/scss/blocks/blockname.scss`
-2. **Подключить в странице**: добавить в массив `blocks` в Pug файле
-3. **Использовать**: применить CSS классы в разметке
+1. **Create SCSS**: `src/scss/blocks/blockname.scss`
+2. **Include in page**: add to `blocks` array in Pug file
+3. **Use**: apply CSS classes in markup
 
-## Работа со шрифтами
+## Working with Fonts
 
-### Быстрый старт
+### Quick Start
 
-1. **Добавить шрифты**: поместить TTF/OTF файлы в `src/fonts/`
-2. **Конвертировать**: `npm run convert-fonts`
-3. **Подключить**: `@import 'fonts';` в main.scss
+1. **Add fonts**: place TTF/OTF files in `src/fonts/`
+2. **Convert**: `npm run convert-fonts`
+3. **Include**: `@import 'fonts';` in main.scss
 
-### Организация шрифтов
+### Font Organization
 
-- Создавайте подпапки по семействам: `src/fonts/roboto/`, `src/fonts/opensans/`
-- Структура папок сохраняется в `public/fonts/`
-- Автогенерация CSS с правильными путями
+- Create subfolders by families: `src/fonts/roboto/`, `src/fonts/opensans/`
+- Folder structure is preserved in `public/fonts/`
+- Auto-generated CSS with correct paths
 
-### Поддерживаемые форматы
+### Supported Formats
 
-- **Входные**: TTF, OTF
-- **Выходные**: WOFF2 (modern), WOFF (legacy)
-- **Браузеры**: WOFF2 (95%+), WOFF (99%+)
+- **Input**: TTF, OTF
+- **Output**: WOFF2 (modern), WOFF (legacy)
+- **Browsers**: WOFF2 (95%+), WOFF (99%+)
 
-Подробнее: [FONTS.md](FONTS.md)
+Read more: [FONTS.md](FONTS.md)
 
-## Работа с изображениями
+## Working with Images
 
-### Быстрый старт
+### Quick Start
 
-1. **Добавить изображения**: поместить JPG/PNG/WebP файлы в `src/images/`
-2. **Конвертировать**: `npm run convert-images`
-3. **Использовать миксины**: подключить `include ../mixins/picture` в Pug
+1. **Add images**: place JPG/PNG/WebP files in `src/images/`
+2. **Convert**: `npm run convert-images`
+3. **Use mixins**: include `include ../mixins/picture` in Pug
 
-### Организация изображений
+### Image Organization
 
-- Группируйте по разделам: `src/images/hero/`, `src/images/gallery/`
-- Структура папок сохраняется в `public/images/`
-- Автоматическое создание всех форматов
+- Group by sections: `src/images/hero/`, `src/images/gallery/`
+- Folder structure is preserved in `public/images/`
+- Automatic creation of all formats
 
-### Форматы и оптимизация
+### Output Formats
 
-- **Входные**: JPG, JPEG, PNG, WebP, TIFF, GIF, BMP
-- **Выходные**:
-  - AVIF (лучшее сжатие, 80% качество)
-  - WebP (широкая поддержка, 85% качество)
-  - Оптимизированный оригинал (90% качество)
-- **Поддержка браузеров**: AVIF (90%+), WebP (96%+), оригинал (100%)
+- **AVIF**: best compression (modern browsers)
+- **WebP**: wide support (modern browsers)
+- **Optimized original**: fallback (all browsers)
 
-### Использование в Pug
+### Usage Examples
 
 ```pug
-//- Подключить миксины
-include ../mixins/picture
+// Responsive image with automatic format selection
++picture('hero.jpg', 'Hero image', 'hero__image')
 
-//- Адаптивное изображение с автовыбором формата
-+picture('hero.jpg', 'Описание', 'hero__image', 'lazy', '100vw')
+// With lazy loading
++picture('gallery-1.jpg', 'Gallery item', 'gallery__item', 'lazy')
 
-//- Простое изображение
-+img('logo.png', 'Логотип', 'header__logo')
-
-//- Hero с разными размерами для устройств
-+hero('hero-mobile.jpg', 'hero-tablet.jpg', 'hero-desktop.jpg', 'Hero', 'hero__bg')
-
-//- Фоновое изображение через CSS переменные
+// Background image
 +backgroundImage('pattern.jpg', 'section__background')
-  p Контент поверх фона
 ```
 
-### Использование в SCSS
+Read more: [IMAGES.md](IMAGES.md)
 
-```scss
-//- Подключить миксины
-@import 'mixins/images';
+## Code Quality
 
-//- Фоновое изображение с автовыбором формата
-.hero {
-  @include background-image('hero.jpg');
-  @include image-cover;
-}
+### Available Tools
 
-//- Адаптивные фоны
-.banner {
-  @include responsive-background(
-    'banner-mobile.jpg',
-    'banner-tablet.jpg',
-    'banner-desktop.jpg'
-  );
-}
+- **ESLint**: JavaScript linting and auto-fixing
+- **Stylelint**: CSS/SCSS linting and auto-fixing
+- **Prettier**: Code formatting for all file types
+- **Pug-lint**: Pug template validation
 
-//- Фон через CSS переменные (с Pug миксином)
-.section {
-  @include bg-with-vars;
-  @include image-cover;
-}
+### Commands
 
-//- Lazy loading фон
-.gallery-item {
-  @include lazy-background('gallery-item.jpg');
-}
+```bash
+# Check all code
+npm run lint
 
-//- Оптимизация изображений в блоке
-.card {
-  @include optimized-image;
+# Format all code
+npm run format
+
+# Individual tools
+npm run lint:js       # JavaScript only
+npm run lint:css      # CSS/SCSS only
+npm run lint:pug      # Pug only
+npm run format:js     # Format JavaScript
+npm run format:css    # Format CSS/SCSS
+```
+
+### Editor Integration
+
+For VS Code, install these extensions:
+- ESLint
+- Stylelint
+- Prettier - Code formatter
+
+Read more: [LINTING.md](LINTING.md)
+
+## Configuration Files
+
+### Main Configuration
+
+- `vite.config.js` - Vite build configuration
+- `package.json` - Dependencies and scripts
+- `postcss.config.js` - PostCSS plugins
+
+### Code Quality
+
+- `eslint.config.js` - ESLint rules and settings
+- `stylelint.config.js` - Stylelint rules for CSS/SCSS
+- `.prettierrc` - Prettier formatting options
+- `.pugrc.js` - Pug-lint validation rules
+
+### Asset Processing
+
+- `scripts/convert-fonts.js` - Font conversion logic
+- `scripts/convert-images.js` - Image optimization logic
+
+## Browser Support
+
+### Modern Features
+
+- ES6+ modules (via Vite transpilation)
+- CSS Grid and Flexbox
+- Modern image formats (AVIF, WebP)
+- Web fonts (WOFF2, WOFF)
+
+### Legacy Support
+
+- Internet Explorer 11+ (with polyfills)
+- Older mobile browsers
+- Graceful degradation for images and fonts
+
+### Browserslist Configuration
+
+```json
+{
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }
 ```
 
-### Автоматическая оптимизация
+## Performance Features
 
-- **При разработке**: изображения используются как есть
-- **При сборке**: автоматическая конвертация и оптимизация
-- **Плагин Vite**: дополнительная оптимизация в production
-- **Lazy loading**: автоматическая поддержка отложенной загрузки
+### Image Optimization
 
-## Поддерживаемые браузеры
+- Automatic format conversion (AVIF, WebP)
+- Lazy loading support
+- Responsive image mixins
+- Progressive enhancement
 
-- Chrome/Edge 80+
-- Firefox 72+
-- Safari 13+
-- IE 11+ (с полифиллами)
+### Font Optimization
 
-## Особенности
+- WOFF2/WOFF conversion for smaller sizes
+- Font-display: swap for better loading
+- Automatic @font-face generation
 
-### Автоматическая сборка
+### Build Optimization
 
-- Автоматический поиск страниц в `src/pug/pages/`
-- Автоматическая компиляция SCSS из `src/scss/pages/` и `src/scss/blocks/`
-- Автоматическое подключение JS из `src/js/`
-- Автоматическая конвертация шрифтов и изображений при сборке
+- CSS/JS code splitting per page
+- Asset optimization and minification
+- Modern ES modules with legacy fallbacks
 
-### Оптимизация
+## Development Workflow
 
-- Минификация CSS и JS
-- Удаление console.log в продакшене
-- Автоматические префиксы
-- Tree-shaking неиспользуемого кода
-- Оптимизация изображений (AVIF, WebP, сжатие)
-- Современные форматы изображений с fallback
+### Daily Development
 
-### Кроссбраузерность
+1. `npm run dev` - start development server
+2. Edit files in `src/`
+3. Hot reload automatically updates browser
+4. `npm run lint` - check code quality
+5. `npm run format` - format code
 
-- Legacy plugin для старых браузеров
-- Полифиллы для ES6+ функций
-- Fallback для современных CSS функций
-- Поддержка старых форматов изображений
+### Asset Updates
+
+1. **Fonts**: Add to `src/fonts/` → run `npm run convert-fonts`
+2. **Images**: Add to `src/images/` → run `npm run convert-images`
+3. **Styles**: Edit SCSS files → auto-compiled
+4. **Scripts**: Edit JS files → auto-compiled
+
+### Pre-deployment
+
+1. `npm run lint` - ensure code quality
+2. `npm run build` - create production build
+3. `npm run preview` - test production build
+4. Deploy `build/` directory
+
+## Troubleshooting
+
+### Common Issues
+
+**Assets not loading**: Run asset conversion commands
+**Styles not updating**: Check SCSS import paths
+**Build errors**: Verify all files exist and are properly linked
+**Font issues**: Ensure TTF/OTF files are in correct folders
+
+### Debug Commands
+
+```bash
+npm run build --verbose    # Detailed build output
+npm run dev --debug       # Debug mode
+npm cache clean --force   # Clear npm cache
+```
+
+For specific issues, check the detailed guides:
+- [Images troubleshooting](IMAGES.md#troubleshooting)
+- [Fonts troubleshooting](FONTS.md#troubleshooting)
+- [Linting issues](LINTING.md#troubleshooting)

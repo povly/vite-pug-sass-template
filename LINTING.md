@@ -1,111 +1,120 @@
-# Линтинг и форматирование
+# Code Linting and Formatting
 
-Проект настроен с полным набором инструментов для проверки качества кода и автоматического форматирования.
+## 📚 Documentation
 
-## Установленные инструменты
+- [📋 Main README](README.md) - Project overview and setup
+- [🖼️ Images Guide](IMAGES.md) - Image processing and optimization
+- [📝 Fonts Guide](FONTS.md) - Font management and conversion
+- [🔧 **Linting & Formatting**](LINTING.md) - Code quality tools (current)
+
+---
+
+This project is configured with a complete set of tools for code quality checking and automatic formatting.
+
+## Installed Tools
 
 ### ESLint
 
-- **Назначение**: Проверка JavaScript кода на ошибки и соблюдение стандартов
-- **Конфиг**: `eslint.config.js`
-- **Поддерживает**: ES modules, браузерные globals, автофикс
+- **Purpose**: JavaScript code analysis for errors and coding standards
+- **Config**: `eslint.config.js`
+- **Features**: ES modules, browser globals, auto-fix
 
 ### Stylelint
 
-- **Назначение**: Проверка CSS/SCSS кода
-- **Конфиг**: `stylelint.config.js`
-- **Поддерживает**: SCSS синтаксис, автофикс
+- **Purpose**: CSS/SCSS code analysis
+- **Config**: `stylelint.config.js`
+- **Features**: SCSS syntax support, auto-fix
 
 ### Prettier
 
-- **Назначение**: Автоматическое форматирование кода
-- **Конфиг**: `.prettierrc`
-- **Поддерживает**: JS, CSS, SCSS, HTML, Markdown
+- **Purpose**: Automatic code formatting
+- **Config**: `.prettierrc`
+- **Features**: JS, CSS, SCSS, HTML, Markdown support
 
 ### Pug-lint
 
-- **Назначение**: Проверка Pug шаблонов
-- **Конфиг**: `.pugrc.js`
-- **Поддерживает**: Валидация синтаксиса и стиля
+- **Purpose**: Pug template validation
+- **Config**: `.pugrc.js`
+- **Features**: Syntax and style validation
 
-## Команды
+## Commands
 
-### Линтинг
+### Linting
 
 ```bash
-# Проверить все файлы
+# Check all files
 npm run lint
 
-# Проверить только JavaScript
+# Check JavaScript only
 npm run lint:js
 
-# Проверить только CSS/SCSS
+# Check CSS/SCSS only
 npm run lint:css
 
-# Проверить только Pug
+# Check Pug only
 npm run lint:pug
 ```
 
-### Форматирование
+### Formatting
 
 ```bash
-# Форматировать все файлы
+# Format all files
 npm run format
 
-# Форматировать только JavaScript
+# Format JavaScript only
 npm run format:js
 
-# Форматировать только CSS/SCSS
+# Format CSS/SCSS only
 npm run format:css
 
-# Форматировать только Pug
+# Format Pug only
 npm run format:pug
 
-# Проверить форматирование без изменений
+# Check formatting without changes
 npm run check-format
 ```
 
-### Комбинированные команды
+### Combined Commands
 
 ```bash
-# Линтинг + форматирование
+# Linting + formatting
 npm run lint-staged
 ```
 
-## Настройки
+## Configuration
 
-### ESLint правила
+### ESLint Rules
 
-- `no-console`: warning - предупреждение о console.log
-- `no-unused-vars`: warning - неиспользуемые переменные
-- `prefer-const`: error - использовать const вместо let
-- `no-var`: error - запрет var
+- `no-console`: warning - warns about console.log usage
+- `no-unused-vars`: warning - unused variables
+- `prefer-const`: error - use const instead of let
+- `no-var`: error - forbid var keyword
 
-### Stylelint правила
+### Stylelint Rules
 
-- Стандартные правила SCSS
-- Отключены строгие паттерны для классов и переменных
-- Поддержка CSS modules (composes)
+- Standard SCSS rules
+- Disabled strict patterns for classes and variables
+- CSS modules support (composes property)
 
-### Prettier настройки
+### Prettier Settings
 
-- Одинарные кавычки
-- Точки с запятой
-- Trailing commas в ES5 стиле
-- 80 символов на строку
-- 2 пробела для отступов
+- Single quotes
+- Semicolons enabled
+- Trailing commas in ES5 style
+- 80 characters per line
+- 2 spaces for indentation
 
-## Интеграция с редактором
+## Editor Integration
 
 ### VS Code
 
-Установите расширения:
+Install extensions:
 
 - ESLint
 - Stylelint
 - Prettier - Code formatter
 
-Добавьте в `settings.json`:
+Add to `settings.json`:
 
 ```json
 {
@@ -117,32 +126,48 @@ npm run lint-staged
 }
 ```
 
-### Другие редакторы
+### Other Editors
 
-Большинство современных редакторов поддерживают эти инструменты через плагины.
+Most modern editors support these tools through plugins.
 
-## Исключения
+## Ignored Files
 
-Файлы в `.prettierignore`:
+Files in `.prettierignore`:
 
 - `node_modules/`
 - `build/`, `dist/`
 - `*.min.js`, `*.min.css`
-- `*.pug` (из-за проблем с парсингом JS в шаблонах)
+- `*.pug` (due to JS parsing issues in templates)
 
 ## Troubleshooting
 
-### Ошибки ESLint
+### ESLint Errors
 
-- Проверьте, что все браузерные API добавлены в globals
-- Используйте `// eslint-disable-next-line` для исключений
+- Ensure all browser APIs are added to globals
+- Use `// eslint-disable-next-line` for exceptions
 
-### Ошибки Stylelint
+### Stylelint Errors
 
-- Убедитесь, что используете SCSS синтаксис
-- Проверьте правильность вложенности
+- Make sure you're using SCSS syntax
+- Check proper nesting rules
 
-### Ошибки Prettier
+### Prettier Errors
 
-- Pug файлы исключены из автоформатирования
-- Используйте `// prettier-ignore` для исключений
+- Pug files are excluded from auto-formatting
+- Use `// prettier-ignore` for exceptions
+
+## Quick Start
+
+1. **Install dependencies**: Already included in the project
+2. **Run linting**: `npm run lint`
+3. **Format code**: `npm run format`
+4. **Set up your editor**: Install recommended extensions
+5. **Enable format on save**: Follow editor integration guide above
+
+## Best Practices
+
+- Run `npm run lint` before committing
+- Use `npm run format` to maintain consistent code style
+- Configure your editor for automatic formatting on save
+- Review linting warnings and fix them when possible
+- Use ESLint disable comments sparingly and document why

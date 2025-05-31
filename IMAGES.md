@@ -1,147 +1,156 @@
-# Оптимизация изображений
+# Image Optimization
 
-Полное руководство по работе с изображениями в Vite Multi-Page Template.
+## 📚 Documentation
 
-## Быстрый старт
+- [📋 Main README](README.md) - Project overview and setup
+- [🖼️ **Images Guide**](IMAGES.md) - Image processing and optimization (current)
+- [📝 Fonts Guide](FONTS.md) - Font management and conversion
+- [🔧 Linting & Formatting](LINTING.md) - Code quality tools
+
+---
+
+Complete guide for working with images in Vite Multi-Page Template.
+
+## Quick Start
 
 ```bash
-# 1. Добавить изображения в src/images/
+# 1. Add images to src/images/
 mkdir src/images
 cp your-image.jpg src/images/
 
-# 2. Конвертировать в современные форматы
+# 2. Convert to modern formats
 npm run convert-images
 
-# 3. Использовать в Pug
+# 3. Use in Pug
 include ../mixins/picture
-+picture('your-image.jpg', 'Описание', 'image-class')
++picture('your-image.jpg', 'Description', 'image-class')
 ```
 
-## Поддерживаемые форматы
+## Supported Formats
 
-### Входные форматы
+### Input Formats
 
-- **JPG/JPEG** - фотографии, сложные изображения
-- **PNG** - изображения с прозрачностью, графика
-- **WebP** - современный формат (уже оптимизированный)
-- **TIFF** - высококачественные изображения
-- **GIF** - анимированная графика
-- **BMP** - растровые изображения
+- **JPG/JPEG** - photos, complex images
+- **PNG** - images with transparency, graphics
+- **WebP** - modern format (already optimized)
+- **TIFF** - high quality images
+- **GIF** - animated graphics
+- **BMP** - bitmap images
 
-### Выходные форматы
+### Output Formats
 
-- **AVIF** - самое лучшее сжатие (80% качество)
-- **WebP** - широкая поддержка (85% качество)
-- **Оптимизированный оригинал** - fallback (90% качество)
+- **AVIF** - best compression (80% quality)
+- **WebP** - wide browser support (85% quality)
+- **Optimized original** - fallback (90% quality)
 
-## Организация файлов
+## File Organization
 
-### Рекомендуемая структура
+### Recommended Structure
 
 ```
 src/images/
-├── hero/                    # Hero секции
-│   ├── hero-desktop.jpg     # 1920x1080 или больше
+├── hero/                    # Hero sections
+│   ├── hero-desktop.jpg     # 1920x1080 or larger
 │   ├── hero-tablet.jpg      # 1024x768
 │   └── hero-mobile.jpg      # 375x667
-├── gallery/                 # Галереи
+├── gallery/                 # Galleries
 │   ├── gallery-1.jpg
 │   ├── gallery-2.jpg
 │   └── gallery-3.png
-├── icons/                   # Иконки и логотипы
+├── icons/                   # Icons and logos
 │   ├── logo.svg
 │   ├── icon-phone.png
 │   └── social-facebook.png
-├── backgrounds/             # Фоновые изображения
+├── backgrounds/             # Background images
 │   ├── pattern.png
 │   ├── texture.jpg
 │   └── gradient-overlay.png
-└── content/                # Контентные изображения
+└── content/                # Content images
     ├── article-image.jpg
     ├── product-photo.jpg
     └── team-member.jpg
 ```
 
-### Именование файлов
+### File Naming
 
 ```bash
-# Хорошо
+# Good
 hero-desktop.jpg
 gallery-item-1.jpg
 logo-company.png
 bg-pattern.jpg
 
-# Плохо
+# Bad
 IMG_2341.jpg
 picture1.jpeg
 background.png
 ```
 
-## Использование в Pug
+## Usage in Pug
 
-### Подключение миксинов
+### Including Mixins
 
 ```pug
-//- В начале файла
+//- At the beginning of the file
 include ../mixins/picture
 ```
 
-### Адаптивные изображения
+### Responsive Images
 
 ```pug
-//- Простое изображение с автоматическим выбором формата
-+picture('hero.jpg', 'Hero изображение', 'hero__image')
+//- Simple image with automatic format selection
++picture('hero.jpg', 'Hero image', 'hero__image')
 
-//- С lazy loading и размерами
-+picture('gallery-1.jpg', 'Фото 1', 'gallery__item', 'lazy', '(max-width: 768px) 100vw, 50vw')
+//- With lazy loading and sizes
++picture('gallery-1.jpg', 'Photo 1', 'gallery__item', 'lazy', '(max-width: 768px) 100vw, 50vw')
 
-//- Eager loading для важных изображений
-+picture('logo.png', 'Логотип', 'header__logo', 'eager')
+//- Eager loading for important images
++picture('logo.png', 'Logo', 'header__logo', 'eager')
 ```
 
-### Hero изображения
+### Hero Images
 
 ```pug
-//- Разные изображения для разных устройств
-+hero('hero-mobile.jpg', 'hero-tablet.jpg', 'hero-desktop.jpg', 'Главное изображение', 'hero__bg')
+//- Different images for different devices
++hero('hero-mobile.jpg', 'hero-tablet.jpg', 'hero-desktop.jpg', 'Main image', 'hero__bg')
 ```
 
-### Простые изображения
+### Simple Images
 
 ```pug
-//- Без <picture>, просто <img>
-+img('simple-icon.png', 'Иконка', 'button__icon')
+//- Without <picture>, just <img>
++img('simple-icon.png', 'Icon', 'button__icon')
 ```
 
-### Фоновые изображения
+### Background Images
 
 ```pug
-//- Создает CSS переменные для фонов
+//- Creates CSS variables for backgrounds
 +backgroundImage('pattern.jpg', 'section__background')
   .content
-    h2 Заголовок
-    p Текст поверх фона
+    h2 Title
+    p Text over background
 ```
 
-## Использование в SCSS
+## Usage in SCSS
 
-### Подключение миксинов
+### Including Mixins
 
 ```scss
 @import 'mixins/images';
 ```
 
-### Фоновые изображения
+### Background Images
 
 ```scss
-// Автоматический выбор формата
+// Automatic format selection
 .hero {
   @include background-image('hero.jpg');
   @include image-cover;
   height: 100vh;
 }
 
-// Разные изображения для разных экранов
+// Different images for different screens
 .banner {
   @include responsive-background(
     'banner-mobile.jpg',
@@ -153,10 +162,10 @@ include ../mixins/picture
 }
 ```
 
-### CSS переменные
+### CSS Variables
 
 ```scss
-// Используется с Pug миксином +backgroundImage
+// Used with Pug mixin +backgroundImage
 .section {
   @include bg-with-vars;
   @include image-cover;
@@ -164,296 +173,190 @@ include ../mixins/picture
 }
 ```
 
-### Lazy loading фонов
+### Lazy Loading Backgrounds
 
 ```scss
 .gallery-item {
   @include lazy-background('gallery-item.jpg');
 
-  // Добавить класс .loaded через JS
+  // Add .loaded class via JS
   &.loaded {
-    // Изображение загружено
+    // Image loaded
   }
 }
 ```
 
-### Оптимизация контейнеров
+### Container Optimization
 
 ```scss
 .card {
   @include optimized-image;
 
-  // Автоматически применяется:
+  // Automatically applies:
   // - content-visibility: auto
-  // - плавная загрузка изображений
-  // - правильные размеры picture/img
+  // - smooth image loading
+  // - proper picture/img sizes
 }
 ```
 
-## JavaScript интеграция
+## JavaScript Integration
 
-### Lazy loading контроль
+### Lazy Loading Control
 
 ```javascript
-// Intersection Observer для lazy loading
+// Intersection Observer for lazy loading
 const images = document.querySelectorAll('img[loading="lazy"]');
 const imageObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach((entry) => {
+  entries.forEach(entry => {
     if (entry.isIntersecting) {
       const img = entry.target;
-      img.classList.add('loaded');
+      img.src = img.dataset.src;
+      img.classList.remove('lazy');
       observer.unobserve(img);
     }
   });
 });
 
-images.forEach((img) => imageObserver.observe(img));
+images.forEach(img => imageObserver.observe(img));
 ```
 
-### Фоновые изображения lazy loading
+### Dynamic Format Detection
 
 ```javascript
-// Для фонов с классом lazy-background
-const backgrounds = document.querySelectorAll('.lazy-background');
-const bgObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('loaded');
-    }
-  });
-});
+// Check WebP support
+function supportsWebP() {
+  const canvas = document.createElement('canvas');
+  return canvas.toDataURL('image/webp').indexOf('webp') > -1;
+}
 
-backgrounds.forEach((bg) => bgObserver.observe(bg));
+// Check AVIF support
+async function supportsAVIF() {
+  if (!self.createImageBitmap) return false;
+
+  const avifData = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgABogQEAwgMg';
+
+  try {
+    const blob = await fetch(avifData).then(r => r.blob());
+    await createImageBitmap(blob);
+    return true;
+  } catch {
+    return false;
+  }
+}
 ```
 
-## Конфигурация оптимизации
+## Performance Optimization
 
-### Настройки Sharp (scripts/convert-images.js)
+### Preloading
 
-```javascript
-// AVIF настройки
-.avif({
-  quality: 80,        // Качество 0-100
-  effort: 4,          # Усилие сжатия 0-9
-  chromaSubsampling: '4:2:0'  // Субдискретизация цвета
-})
-
-// WebP настройки
-.webp({
-  quality: 85,        // Качество 0-100
-  effort: 4,          // Усилие сжатия 0-6
-  method: 6           // Метод сжатия 0-6
-})
-
-// JPEG настройки
-.jpeg({
-  quality: 90,        // Качество 0-100
-  progressive: true,  // Прогрессивная загрузка
-  mozjpeg: true      // Использовать mozjpeg
-})
-
-// PNG настройки
-.png({
-  quality: 90,           // Качество 0-100
-  compressionLevel: 9,   // Уровень сжатия 0-9
-  progressive: true      // Прогрессивная загрузка
-})
+```html
+<!-- Preload critical images -->
+<link rel="preload" as="image" href="/images/hero/hero-desktop.avif" type="image/avif">
+<link rel="preload" as="image" href="/images/hero/hero-desktop.webp" type="image/webp">
 ```
 
-### Настройки Vite плагина
+### Resource Hints
 
-```javascript
-// vite.config.js
-ViteImageOptimize({
-  jpg: { quality: 90, progressive: true },
-  jpeg: { quality: 90, progressive: true },
-  png: { quality: 90, compressionLevel: 9 },
-  webp: { quality: 85, effort: 4 },
-  avif: { quality: 80, effort: 4 },
-  svg: {
-    plugins: [
-      { name: 'removeViewBox', active: false },
-      { name: 'removeDimensions', active: true },
-    ],
-  },
-});
+```html
+<!-- DNS prefetch for image CDN -->
+<link rel="dns-prefetch" href="//images.example.com">
+
+<!-- Preconnect for external images -->
+<link rel="preconnect" href="https://images.unsplash.com">
 ```
 
-## Размеры изображений
+### Image Optimization Tips
 
-### Рекомендации по размерам
+1. **Use appropriate sizes**: Don't serve desktop images to mobile
+2. **Lazy load below-the-fold**: Save bandwidth for important content
+3. **Optimize quality settings**: 80-85% quality is usually sufficient
+4. **Use modern formats**: AVIF and WebP provide better compression
+5. **Implement progressive enhancement**: Always provide fallbacks
 
-```
-Hero изображения:
-- Desktop: 1920x1080 (16:9) или 1920x800 (2.4:1)
-- Tablet: 1024x768 (4:3) или 1024x576 (16:9)
-- Mobile: 375x667 (примерно 9:16)
+## Browser Support
 
-Галерея:
-- Квадратные: 800x800, 600x600, 400x400
-- Прямоугольные: 800x600 (4:3), 800x450 (16:9)
+| Format | Chrome | Firefox | Safari | Edge | IE  |
+|--------|--------|---------|--------|------|-----|
+| AVIF   | 85+    | 93+     | 16.1+  | 93+  | ❌   |
+| WebP   | 23+    | 65+     | 14+    | 18+  | ❌   |
+| JPEG   | ✅      | ✅       | ✅      | ✅    | ✅   |
+| PNG    | ✅      | ✅       | ✅      | ✅    | ✅   |
 
-Иконки:
-- Маленькие: 24x24, 32x32, 48x48
-- Средние: 64x64, 96x96
-- Большие: 128x128, 256x256
+## Advanced Usage
 
-Логотипы:
-- Обычные: 200x80, 300x120
-- Ретина: 400x160, 600x240
-```
-
-### Adaptive изображения
+### Art Direction
 
 ```pug
-//- Используйте sizes для оптимизации загрузки
-+picture('hero.jpg', 'Hero', 'hero__image', 'lazy', '100vw')
-
-+picture('card-image.jpg', 'Карточка', 'card__image', 'lazy', '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw')
+//- Different images for different viewports
+picture
+  source(
+    media="(min-width: 1024px)"
+    srcset="/images/hero/hero-desktop.avif"
+    type="image/avif"
+  )
+  source(
+    media="(min-width: 1024px)"
+    srcset="/images/hero/hero-desktop.webp"
+    type="image/webp"
+  )
+  source(
+    media="(min-width: 768px)"
+    srcset="/images/hero/hero-tablet.avif"
+    type="image/avif"
+  )
+  source(
+    media="(min-width: 768px)"
+    srcset="/images/hero/hero-tablet.webp"
+    type="image/webp"
+  )
+  img(
+    src="/images/hero/hero-mobile.jpg"
+    alt="Hero image"
+    loading="eager"
+  )
 ```
 
-## Performance оптимизация
-
-### Preload критичных изображений
-
-```html
-<!-- В <head> для важных изображений -->
-<link rel="preload" as="image" href="/images/hero.avif" type="image/avif" />
-<link rel="preload" as="image" href="/images/hero.webp" type="image/webp" />
-<link rel="preload" as="image" href="/images/hero.jpg" type="image/jpeg" />
-```
-
-### Prioritization
+### Responsive Sizes
 
 ```pug
-//- Важные изображения "above the fold"
-+picture('hero.jpg', 'Hero', 'hero__image', 'eager')
-
-//- Остальные изображения
-+picture('gallery-1.jpg', 'Галерея', 'gallery__item', 'lazy')
-```
-
-### Resource hints
-
-```html
-<!-- Предзагрузка домена для изображений -->
-<link rel="dns-prefetch" href="//images.example.com" />
-<link rel="preconnect" href="//images.example.com" />
-```
-
-## Поддержка браузеров
-
-### Статистика поддержки
-
-- **AVIF**: Chrome 85+, Firefox 93+, Safari 16+ (~90% пользователей)
-- **WebP**: Chrome 23+, Firefox 65+, Safari 14+ (~96% пользователей)
-- **JPEG/PNG**: Все браузеры (100% пользователей)
-
-### Fallback стратегия
-
-```html
-<!-- Автоматически генерируется миксином +picture -->
-<picture>
-  <source srcset="image.avif" type="image/avif" />
-  <source srcset="image.webp" type="image/webp" />
-  <img src="image.jpg" alt="Описание" />
-</picture>
-```
-
-## Автоматизация
-
-### При разработке
-
-```bash
-# Автоматическая конвертация при изменении файлов
-npm run dev
-# Файлы обрабатываются автоматически при обнаружении новых изображений
-```
-
-### При сборке
-
-```bash
-# Автоматическая оптимизация
-npm run build
-# Включает:
-# 1. Конвертацию в современные форматы
-# 2. Дополнительную оптимизацию Vite плагином
-# 3. Минификацию SVG
-```
-
-### CI/CD интеграция
-
-```yaml
-# .github/workflows/build.yml
-- name: Install dependencies
-  run: npm ci
-
-- name: Convert images
-  run: npm run convert-images
-
-- name: Build
-  run: npm run build
+//- Complex sizes attribute
++picture(
+  'gallery-item.jpg',
+  'Gallery item',
+  'gallery__item',
+  'lazy',
+  '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
+)
 ```
 
 ## Troubleshooting
 
-### Проблемы с Sharp
+### Images Not Loading
 
-```bash
-# Переустановка Sharp
-npm uninstall sharp
-npm install --save-dev sharp
+1. **Check file paths**: Ensure images exist in `src/images/`
+2. **Run conversion**: Execute `npm run convert-images`
+3. **Verify output**: Check `public/images/` directory
+4. **Browser cache**: Hard refresh (Ctrl+F5)
 
-# Очистка кэша
-npm cache clean --force
-```
+### Large Bundle Sizes
 
-### Большие файлы
+1. **Optimize source images**: Reduce resolution before conversion
+2. **Adjust quality settings**: Lower quality percentages in conversion script
+3. **Remove unused images**: Clean up `src/images/` directory
+4. **Use lazy loading**: Load images only when needed
 
-```javascript
-// Увеличить качество для больших файлов
-if (fileSize > 2000000) {
-  // 2MB
-  quality = 95;
-}
-```
+### Poor Performance
 
-### Медленная конвертация
-
-```javascript
-// Параллельная обработка
-const maxConcurrency = require('os').cpus().length;
-// Используйте worker threads или child processes
-```
+1. **Implement lazy loading**: Add `loading="lazy"` to non-critical images
+2. **Use appropriate formats**: Prefer AVIF over WebP over JPEG
+3. **Size optimization**: Serve different sizes for different viewports
+4. **Preload critical images**: Use resource hints for above-the-fold content
 
 ## Best Practices
 
-1. **Используйте правильные форматы**:
-
-   - JPEG для фотографий
-   - PNG для графики с прозрачностью
-   - SVG для простых иконок
-   - WebP/AVIF для веба
-
-2. **Оптимизируйте размеры**:
-
-   - Не загружайте изображения больше, чем нужно
-   - Используйте responsive изображения
-   - Применяйте lazy loading
-
-3. **Именуйте файлы осмысленно**:
-
-   - Используйте описательные названия
-   - Группируйте по папкам
-   - Следуйте конвенции именования
-
-4. **Тестируйте производительность**:
-
-   - Используйте Lighthouse
-   - Проверяйте Core Web Vitals
-   - Тестируйте на медленных соединениях
-
-5. **Мониторьте размеры**:
-   - Следите за размером bundle
-   - Используйте Budget в Webpack/Vite
-   - Регулярно оптимизируйте изображения
+- **Always provide alt text**: Essential for accessibility
+- **Use semantic HTML**: Proper image markup improves SEO
+- **Optimize for mobile first**: Start with smallest images
+- **Test on real devices**: Verify performance on actual hardware
+- **Monitor core web vitals**: Track LCP, CLS, and other metrics
+- **Keep source images**: Never delete original high-quality files
