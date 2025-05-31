@@ -205,7 +205,6 @@ Read more: [FONTS.md](FONTS.md)
 
 1. **Add images**: place JPG/PNG/WebP files in `src/images/`
 2. **Convert**: `npm run convert-images`
-3. **Use mixins**: include `include ../mixins/picture` in Pug
 
 ### Image Organization
 
@@ -218,19 +217,6 @@ Read more: [FONTS.md](FONTS.md)
 - **AVIF**: best compression (modern browsers)
 - **WebP**: wide support (modern browsers)
 - **Optimized original**: fallback (all browsers)
-
-### Usage Examples
-
-```pug
-// Responsive image with automatic format selection
-+picture('hero.jpg', 'Hero image', 'hero__image')
-
-// With lazy loading
-+picture('gallery-1.jpg', 'Gallery item', 'gallery__item', 'lazy')
-
-// Background image
-+backgroundImage('pattern.jpg', 'section__background')
-```
 
 Read more: [IMAGES.md](IMAGES.md)
 

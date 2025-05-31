@@ -21,11 +21,6 @@ cp your-image.jpg src/images/
 # 2. Convert to modern formats
 npm run convert-images
 
-# 3. Use in Pug
-include ../mixins/picture
-+picture('your-image.jpg', 'Description', 'image-class')
-```
-
 ## Supported Formats
 
 ### Input Formats
@@ -71,42 +66,6 @@ src/images/
     └── team-member.jpg
 ```
 
-### File Naming
-
-```bash
-# Good
-hero-desktop.jpg
-gallery-item-1.jpg
-logo-company.png
-bg-pattern.jpg
-
-# Bad
-IMG_2341.jpg
-picture1.jpeg
-background.png
-```
-
-## Usage in Pug
-
-### Including Mixins
-
-```pug
-//- At the beginning of the file
-include ../mixins/picture
-```
-
-### Responsive Images
-
-```pug
-//- Simple image with automatic format selection
-+picture('hero.jpg', 'Hero image', 'hero__image')
-
-//- With lazy loading and sizes
-+picture('gallery-1.jpg', 'Photo 1', 'gallery__item', 'lazy', '(max-width: 768px) 100vw, 50vw')
-
-//- Eager loading for important images
-+picture('logo.png', 'Logo', 'header__logo', 'eager')
-```
 
 ### Hero Images
 
@@ -115,155 +74,6 @@ include ../mixins/picture
 +hero('hero-mobile.jpg', 'hero-tablet.jpg', 'hero-desktop.jpg', 'Main image', 'hero__bg')
 ```
 
-### Simple Images
-
-```pug
-//- Without <picture>, just <img>
-+img('simple-icon.png', 'Icon', 'button__icon')
-```
-
-### Background Images
-
-```pug
-//- Creates CSS variables for backgrounds
-+backgroundImage('pattern.jpg', 'section__background')
-  .content
-    h2 Title
-    p Text over background
-```
-
-## Usage in SCSS
-
-### Including Mixins
-
-```scss
-@import 'mixins/images';
-```
-
-### Background Images
-
-```scss
-// Automatic format selection
-.hero {
-  @include background-image('hero.jpg');
-  @include image-cover;
-  height: 100vh;
-}
-
-// Different images for different screens
-.banner {
-  @include responsive-background(
-    'banner-mobile.jpg',
-    // <= 767px
-    'banner-tablet.jpg',
-    // 768px - 1023px
-    'banner-desktop.jpg' // >= 1024px
-  );
-}
-```
-
-### CSS Variables
-
-```scss
-// Used with Pug mixin +backgroundImage
-.section {
-  @include bg-with-vars;
-  @include image-cover;
-  min-height: 400px;
-}
-```
-
-### Lazy Loading Backgrounds
-
-```scss
-.gallery-item {
-  @include lazy-background('gallery-item.jpg');
-
-  // Add .loaded class via JS
-  &.loaded {
-    // Image loaded
-  }
-}
-```
-
-### Container Optimization
-
-```scss
-.card {
-  @include optimized-image;
-
-  // Automatically applies:
-  // - content-visibility: auto
-  // - smooth image loading
-  // - proper picture/img sizes
-}
-```
-
-## JavaScript Integration
-
-### Lazy Loading Control
-
-```javascript
-// Intersection Observer for lazy loading
-const images = document.querySelectorAll('img[loading="lazy"]');
-const imageObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const img = entry.target;
-      img.src = img.dataset.src;
-      img.classList.remove('lazy');
-      observer.unobserve(img);
-    }
-  });
-});
-
-images.forEach(img => imageObserver.observe(img));
-```
-
-### Dynamic Format Detection
-
-```javascript
-// Check WebP support
-function supportsWebP() {
-  const canvas = document.createElement('canvas');
-  return canvas.toDataURL('image/webp').indexOf('webp') > -1;
-}
-
-// Check AVIF support
-async function supportsAVIF() {
-  if (!self.createImageBitmap) return false;
-
-  const avifData = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgABogQEAwgMg';
-
-  try {
-    const blob = await fetch(avifData).then(r => r.blob());
-    await createImageBitmap(blob);
-    return true;
-  } catch {
-    return false;
-  }
-}
-```
-
-## Performance Optimization
-
-### Preloading
-
-```html
-<!-- Preload critical images -->
-<link rel="preload" as="image" href="/images/hero/hero-desktop.avif" type="image/avif">
-<link rel="preload" as="image" href="/images/hero/hero-desktop.webp" type="image/webp">
-```
-
-### Resource Hints
-
-```html
-<!-- DNS prefetch for image CDN -->
-<link rel="dns-prefetch" href="//images.example.com">
-
-<!-- Preconnect for external images -->
-<link rel="preconnect" href="https://images.unsplash.com">
-```
 
 ### Image Optimization Tips
 
@@ -282,52 +92,6 @@ async function supportsAVIF() {
 | JPEG   | ✅      | ✅       | ✅      | ✅    | ✅   |
 | PNG    | ✅      | ✅       | ✅      | ✅    | ✅   |
 
-## Advanced Usage
-
-### Art Direction
-
-```pug
-//- Different images for different viewports
-picture
-  source(
-    media="(min-width: 1024px)"
-    srcset="/images/hero/hero-desktop.avif"
-    type="image/avif"
-  )
-  source(
-    media="(min-width: 1024px)"
-    srcset="/images/hero/hero-desktop.webp"
-    type="image/webp"
-  )
-  source(
-    media="(min-width: 768px)"
-    srcset="/images/hero/hero-tablet.avif"
-    type="image/avif"
-  )
-  source(
-    media="(min-width: 768px)"
-    srcset="/images/hero/hero-tablet.webp"
-    type="image/webp"
-  )
-  img(
-    src="/images/hero/hero-mobile.jpg"
-    alt="Hero image"
-    loading="eager"
-  )
-```
-
-### Responsive Sizes
-
-```pug
-//- Complex sizes attribute
-+picture(
-  'gallery-item.jpg',
-  'Gallery item',
-  'gallery__item',
-  'lazy',
-  '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
-)
-```
 
 ## Troubleshooting
 

@@ -200,14 +200,6 @@ npm install ttf2woff ttf2woff2 --save-dev
 }
 ```
 
-### Performance Optimization
-
-```html
-<!-- Preload critical fonts in HTML head -->
-<link rel="preload" href="/fonts/roboto/Roboto-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/roboto/Roboto-Bold.woff2" as="font" type="font/woff2" crossorigin>
-```
-
 ## Font Organization Tips
 
 ### Recommended Structure
@@ -236,26 +228,6 @@ src/fonts/
 3. **Consistent naming**: Use descriptive folder and file names
 4. **Group logically**: Organize by usage, not alphabetically
 5. **Test loading**: Verify fonts load correctly across devices
-
-## Performance Considerations
-
-### Loading Priority
-
-```scss
-// Critical fonts (above-the-fold content)
-@font-face {
-  font-family: 'primary';
-  src: url('/fonts/primary/Primary-Regular.woff2') format('woff2');
-  font-display: swap;
-}
-
-// Non-critical fonts can use fallback
-@font-face {
-  font-family: 'display';
-  src: url('/fonts/display/Display-Bold.woff2') format('woff2');
-  font-display: optional; // Won't block render
-}
-```
 
 ### Bundle Size Optimization
 
