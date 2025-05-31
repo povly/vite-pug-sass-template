@@ -12,6 +12,7 @@
 - 📦 **Модульность** - раздельная компиляция CSS и JS
 - 🧩 **Блоки** - модульная система стилей
 - 🌐 **Кроссбраузерность** - поддержка старых браузеров
+- 🔤 **Конвертация шрифтов** - автоматическая конвертация TTF/OTF в WOFF/WOFF2
 
 ## Установка
 
@@ -30,6 +31,9 @@ npm run build
 
 # Предварительный просмотр сборки
 npm run preview
+
+# Конвертация шрифтов
+npm run convert-fonts
 ```
 
 ## Структура проекта
@@ -49,6 +53,7 @@ npm run preview
 │   │       └── button.pug
 │   ├── scss/
 │   │   ├── main.scss        # Главные стили
+│   │   ├── _fonts.scss      # Автогенерируемые шрифты
 │   │   ├── pages/           # Стили страниц
 │   │   │   ├── index.scss
 │   │   │   └── about.scss
@@ -56,12 +61,24 @@ npm run preview
 │   │       ├── header.scss
 │   │       ├── footer.scss
 │   │       └── button.scss
+│   ├── fonts/               # Исходные шрифты (TTF/OTF)
+│   │   └── roboto/          # Группировка по семействам
+│   │       ├── Roboto-Regular.ttf
+│   │       └── Roboto-Light.ttf
 │   └── js/
 │       ├── main.js          # Общий JavaScript
 │       ├── index.js         # JS главной страницы
 │       └── about.js         # JS страницы about
 ├── public/
+│   ├── fonts/               # Конвертированные шрифты
+│   │   └── roboto/          # Структура сохраняется
+│   │       ├── Roboto-Regular.woff2
+│   │       ├── Roboto-Regular.woff
+│   │       ├── Roboto-Light.woff2
+│   │       └── Roboto-Light.woff
 │   └── vite.svg
+├── scripts/
+│   └── convert-fonts.js     # Скрипт конвертации шрифтов
 ├── vite.config.js           # Конфигурация Vite
 └── package.json
 ```
@@ -71,7 +88,7 @@ npm run preview
 После выполнения `npm run build` создается структура:
 
 ```
-dist/
+build/
 ├── index.html               # Главная страница
 ├── about.html               # Страница about
 ├── css/
@@ -82,6 +99,12 @@ dist/
 │       ├── header.css
 │       ├── footer.css
 │       └── button.css
+├── fonts/               # Исходные шрифты (Woff2/Woff)
+    └── roboto/          # Группировка по семействам
+        ├── Roboto-Regular.woff
+        ├── Roboto-Regular.woff2
+        ├── Roboto-Light.woff
+        └── Roboto-Light.woff2
 └── js/
     ├── main.js             # Общий JS
     ├── index.js            # JS главной
@@ -102,6 +125,25 @@ Vite автоматически найдет и добавит новые фай
 1. **Создать SCSS**: `src/scss/blocks/blockname.scss`
 2. **Подключить в странице**: добавить в массив `blocks` в Pug файле
 3. **Использовать**: применить CSS классы в разметке
+
+## Работа со шрифтами
+
+### Быстрый старт
+1. **Добавить шрифты**: поместить TTF/OTF файлы в `src/fonts/`
+2. **Конвертировать**: `npm run convert-fonts`
+3. **Подключить**: `@import 'fonts';` в main.scss
+
+### Организация шрифтов
+- Создавайте подпапки по семействам: `src/fonts/roboto/`, `src/fonts/opensans/`
+- Структура папок сохраняется в `public/fonts/`
+- Автогенерация CSS с правильными путями
+
+### Поддерживаемые форматы
+- **Входные**: TTF, OTF
+- **Выходные**: WOFF2 (modern), WOFF (legacy)
+- **Браузеры**: WOFF2 (95%+), WOFF (99%+)
+
+Подробнее: [FONTS.md](FONTS.md)
 
 ## Поддерживаемые браузеры
 
