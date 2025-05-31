@@ -73,4 +73,11 @@ Thumbs.db
 tmp/
 temp/
 
+# Font sources (exclude original fonts)
+src/fonts/*.ttf
+src/fonts/*.otf
+
+# Keep converted fonts
+!public/fonts/
+
 .cursor

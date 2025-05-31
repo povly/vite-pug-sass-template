@@ -75,9 +75,35 @@ function getSCSSEntries() {
   return entries
 }
 
+// Функция для конвертации шрифтов
+function fontConverter() {
+  return {
+    name: 'font-converter',
+    buildStart() {
+      const fontsDir = 'src/fonts'
+      if (!existsSync(fontsDir)) return
+
+      const fontFiles = readdirSync(fontsDir).filter(file =>
+        file.endsWith('.ttf') || file.endsWith('.otf')
+      )
+
+      if (fontFiles.length > 0) {
+        console.log(`🔄 Converting ${fontFiles.length} font(s) during build...`)
+
+        // Запускаем скрипт конвертации
+        try {
+          const { execSync } = require('child_process')
+          execSync('node scripts/convert-fonts.js', { stdio: 'inherit' })
+        } catch (error) {
+          console.error('Font conversion failed:', error.message)
+        }
+      }
+    }
+  }
+}
+
 export default defineConfig(({ command, mode }) => {
   const isDev = command === 'serve' || mode === 'development'
-  console.log('Vite mode:', mode, 'command:', command, 'isDev:', isDev)
 
   return {
     plugins: [
@@ -115,7 +141,8 @@ export default defineConfig(({ command, mode }) => {
             }
           }
         }
-      }
+      },
+      fontConverter()
     ],
     css: {
       preprocessorOptions: {

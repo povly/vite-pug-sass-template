@@ -6,13 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "convert-fonts": "node scripts/convert-fonts.js"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "sass-embedded": "^1.69.0",
     "terser": "^5.24.0",
+    "ttf2woff": "^3.0.0",
+    "ttf2woff2": "^4.0.5",
     "vite": "^5.0.0",
     "vite-plugin-pug": "^0.4.1"
   },

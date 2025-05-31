@@ -1,7 +1,8 @@
 // Main styles - глобальные стили для всего сайта
 
 // Import variables and mixins
+@use 'fonts';
 @use 'variables';
 @use 'base';
 // Import blocks
-@use 'blocks/header'; 
+@use 'blocks/header';

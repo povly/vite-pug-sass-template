@@ -21,12 +21,13 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
 }
 
 // Global layout
 .container {
   max-width: 1280px;
-  margin: 0 auto; 
+  margin: 0 auto;
   padding: 2rem;
 }
 
