@@ -12,6 +12,12 @@ export default {
     'scss/dollar-variable-pattern': null,
     'scss/percent-placeholder-pattern': null,
     'scss/no-global-function-names': null,
+    'selector-pseudo-element-no-unknown': null,
+    'selector-pseudo-class-no-unknown': null,
+    'no-descending-specificity': null,
+    'selector-class-pattern': null,
+    'declaration-block-no-redundant-longhand-properties': null,
+    'scss/operator-no-newline-after': null,
   },
   ignoreFiles: ['node_modules/**', 'build/**', 'dist/**'],
 };

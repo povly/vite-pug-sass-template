@@ -16,6 +16,7 @@ export default [
       'no-console': 'warn',
       'prefer-const': 'error',
       'no-var': 'error',
+      'no-undef': 'warn',
     },
     languageOptions: {
       ecmaVersion: 'latest',

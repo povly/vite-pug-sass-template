@@ -1,4 +1,12 @@
-import { readdirSync, existsSync, mkdirSync, statSync, copyFileSync, readFileSync, writeFileSync } from 'fs';
+import {
+  readdirSync,
+  existsSync,
+  mkdirSync,
+  statSync,
+  copyFileSync,
+  readFileSync,
+  writeFileSync,
+} from 'fs';
 import { join, extname, dirname, relative } from 'path';
 import { optimize } from 'svgo';
 
@@ -26,8 +34,6 @@ const svgoConfig = {
     'convertColors',
     'convertPathData',
     'convertTransform',
-    'removeUselessStrokeAndFill',
-    'removeNonInheritGroupAttrs',
     'removeUselessStrokeAndFill',
     'removeUnknownsAndDefaults',
     'removeNonInheritGroupAttrs',
@@ -101,13 +107,17 @@ async function processDirectory(dirPath) {
         const success = await optimizeSVG(itemPath, outputPath);
         if (success) processedFiles++;
 
-        console.log(`${success ? '✅' : '⚠️'} Обработано: ${relative(process.cwd(), itemPath)} → ${relative(process.cwd(), outputPath)}`);
+        console.log(
+          `${success ? '✅' : '⚠️'} Обработано: ${relative(process.cwd(), itemPath)} → ${relative(process.cwd(), outputPath)}`
+        );
       }
     }
   }
 
   if (totalFiles > 0) {
-    console.log(`\n📊 Обработано ${processedFiles}/${totalFiles} SVG файлов в ${dirPath}`);
+    console.log(
+      `\n📊 Обработано ${processedFiles}/${totalFiles} SVG файлов в ${dirPath}`
+    );
   }
 }
 
