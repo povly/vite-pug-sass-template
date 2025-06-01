@@ -147,11 +147,11 @@ function convertFonts() {
   const cssContent = generateFontCSS(convertedFonts);
 
   // Создаем scss директорию если не существует
-  if (!existsSync('src/scss')) {
-    mkdirSync('src/scss', { recursive: true });
+  if (!existsSync('src/scss/common')) {
+    mkdirSync('src/scss/common', { recursive: true });
   }
 
-  writeFileSync('src/scss/_fonts.scss', cssContent);
+  writeFileSync('src/scss/common/_fonts.scss', cssContent);
 
   console.log('🎉 Font conversion completed!');
   console.log('📝 Generated _fonts.scss with @font-face declarations');
