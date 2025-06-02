@@ -65,6 +65,25 @@ function getJSEntries() {
     });
   }
 
+  const pagesDir = 'src/js/pages';
+  if (existsSync(pagesDir)) {
+    function scanDir(dir, baseEntry = '') {
+      const items = readdirSync(dir, { withFileTypes: true });
+      items.forEach((item) => {
+        if (item.isDirectory()) {
+          scanDir(`${dir}/${item.name}`, `${baseEntry}${item.name}/`);
+        } else if (item.name.endsWith('.js')) {
+          const name = item.name.replace('.js', '');
+          entries[`pages/${baseEntry}${name}`] = resolve(
+            process.cwd(),
+            `${dir}/${item.name}`
+          );
+        }
+      });
+    }
+    scanDir(pagesDir);
+  }
+
   return entries;
 }
 
@@ -89,19 +108,38 @@ function getSCSSEntries() {
     });
   }
 
+  const libsDir = 'src/scss/libs';
+  if (existsSync(libsDir)) {
+    const libFiles = readdirSync(libsDir).filter((file) =>
+      file.endsWith('.scss')
+    );
+    libFiles.forEach((file) => {
+      const name = file.replace('.scss', '');
+      entries[`css/libs/${name}`] = resolve(
+        process.cwd(),
+        `${libsDir}/${file}`
+      );
+    });
+  }
+
   // Блоки
   const blocksDir = 'src/scss/blocks';
   if (existsSync(blocksDir)) {
-    const blockFiles = readdirSync(blocksDir).filter((file) =>
-      file.endsWith('.scss')
-    );
-    blockFiles.forEach((file) => {
-      const name = file.replace('.scss', '');
-      entries[`css/blocks/${name}`] = resolve(
-        process.cwd(),
-        `${blocksDir}/${file}`
-      );
-    });
+    function scanBlocksDir(dir, baseEntry = '') {
+      const items = readdirSync(dir, { withFileTypes: true });
+      items.forEach((item) => {
+        if (item.isDirectory()) {
+          scanBlocksDir(`${dir}/${item.name}`, `${baseEntry}${item.name}/`);
+        } else if (item.name.endsWith('.scss')) {
+          const name = item.name.replace('.scss', '');
+          entries[`css/blocks/${baseEntry}${name}`] = resolve(
+            process.cwd(),
+            `${dir}/${item.name}`
+          );
+        }
+      });
+    }
+    scanBlocksDir(blocksDir);
   }
 
   return entries;
@@ -202,36 +240,36 @@ export default defineConfig(({ command, mode }) => {
       ),
       // Оптимизация изображений в production
       !isDev &&
-        ViteImageOptimizer({
-          jpg: {
-            quality: 90,
-            progressive: true,
-          },
-          jpeg: {
-            quality: 90,
-            progressive: true,
-          },
-          png: {
-            quality: 90,
-            compressionLevel: 9,
-          },
-          webp: {
-            quality: 85,
-            effort: 4,
-          },
-          avif: {
-            quality: 80,
-            effort: 4,
-          },
-          svg: {
-            plugins: [
-              { name: 'removeViewBox', active: false },
-              { name: 'removeDimensions', active: true },
-              { name: 'removeComments', active: true },
-              { name: 'removeUselessStrokeAndFill', active: true },
-            ],
-          },
-        }),
+      ViteImageOptimizer({
+        jpg: {
+          quality: 90,
+          progressive: true,
+        },
+        jpeg: {
+          quality: 90,
+          progressive: true,
+        },
+        png: {
+          quality: 90,
+          compressionLevel: 9,
+        },
+        webp: {
+          quality: 85,
+          effort: 4,
+        },
+        avif: {
+          quality: 80,
+          effort: 4,
+        },
+        svg: {
+          plugins: [
+            { name: 'removeViewBox', active: false },
+            { name: 'removeDimensions', active: true },
+            { name: 'removeComments', active: true },
+            { name: 'removeUselessStrokeAndFill', active: true },
+          ],
+        },
+      }),
       liveReload(['src/**/*.{html,js,scss}']),
       // Кастомный плагин для перемещения HTML файлов в корень build
       {
@@ -325,6 +363,9 @@ export default defineConfig(({ command, mode }) => {
 
                 if (originalEntry?.startsWith('css/blocks/')) {
                   return `css/blocks/${fileName}.css`;
+                }
+                if (originalEntry?.startsWith('css/libs/')) {
+                  return `css/libs/${fileName}.css`;
                 }
               }
 

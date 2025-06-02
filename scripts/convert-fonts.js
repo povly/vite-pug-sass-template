@@ -139,22 +139,22 @@ function convertFonts() {
     fontFiles.map((f) => basename(f))
   );
 
-  const convertedFonts = fontFiles.map((file) => {
-    return convertFont(file, OUTPUT_DIR);
-  });
+  // const convertedFonts = fontFiles.map((file) => {
+  //   return convertFont(file, OUTPUT_DIR);
+  // });
 
-  // Генерируем CSS для шрифтов
-  const cssContent = generateFontCSS(convertedFonts);
+  // // Генерируем CSS для шрифтов
+  // const cssContent = generateFontCSS(convertedFonts);
 
-  // Создаем scss директорию если не существует
-  if (!existsSync('src/scss/common')) {
-    mkdirSync('src/scss/common', { recursive: true });
-  }
+  // // Создаем scss директорию если не существует
+  // if (!existsSync('src/scss/common')) {
+  //   mkdirSync('src/scss/common', { recursive: true });
+  // }
 
-  writeFileSync('src/scss/common/_fonts.scss', cssContent);
+  // writeFileSync('src/scss/common/_fonts.scss', cssContent);
 
   console.log('🎉 Font conversion completed!');
-  console.log('📝 Generated _fonts.scss with @font-face declarations');
+  // console.log('📝 Generated _fonts.scss with @font-face declarations');
 }
 
 convertFonts();
