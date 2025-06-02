@@ -1,69 +1,32 @@
-//- Миксин для отзывчивых изображений с автоматическим выбором формата
-mixin picture(src, alt = '', className = '', loading = 'lazy', sizes = '')
-  - const baseName = src.replace(/\.[^/.]+$/, '');
-  - const extension = src.split('.').pop();
-  - const imagePath = `/images/${src}`;
-  - const avifPath = `/images/${baseName}.avif`;
-  - const webpPath = `/images/${baseName}.webp`;
+mixin picture(args = {})
+  -
+    const {
+      src,
+      lazy = false,
+      classes = '',
+      width,
+      height,
+      formats = [],
+      srcset = '',
+      alt = '',
+    } = args;
 
-  picture(class=className)
-    //- AVIF - современный формат с лучшим сжатием
-    source(srcset=avifPath, type='image/avif', sizes=sizes)
-    //- WebP - широкая поддержка
-    source(srcset=webpPath, type='image/webp', sizes=sizes)
-    //- Fallback - оригинальный формат
-    img(src=imagePath, alt=alt, loading=loading, decoding='async', sizes=sizes)
+  picture
+    each format in formats
+      - const ext = format.type;
+      source(
+        type=`image/${ext}`
+        srcset=lazy ? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==' : (format.srcset || format.src)
+        data-srcset=lazy ? (format.srcset || format.src) : null
+      )
 
-//- Миксин для простых изображений (без <picture>)
-mixin img(src, alt = '', className = '', loading = 'lazy')
-  - const imagePath = `/images/${src}`;
-  img(src=imagePath, alt=alt, class=className, loading=loading, decoding='async')
-
-//- Миксин для фоновых изображений с CSS переменными
-mixin backgroundImage(src, className = '')
-  - const baseName = src.replace(/\.[^/.]+$/, '');
-  - const avifPath = `/images/${baseName}.avif`;
-  - const webpPath = `/images/${baseName}.webp`;
-  - const fallbackPath = `/images/${src}`;
-
-  div(
-    class=className,
-    style=`--bg-avif: url('${avifPath}'); --bg-webp: url('${webpPath}'); --bg-fallback: url('${fallbackPath}');`
-  )
-    block
-
-//- Миксин для Hero изображений с разными размерами
-mixin hero(srcMobile, srcTablet, srcDesktop, alt = '', className = '')
-  - const getImagePaths = (src) => {
-  - const baseName = src.replace(/\.[^/.]+$/, '');
-  - return {
-  - avif: `/images/${baseName}.avif`,
-  - webp: `/images/${baseName}.webp`,
-  - original: `/images/${src}`;
-  - }
-  - }
-  - const mobile = getImagePaths(srcMobile);
-  - const tablet = getImagePaths(srcTablet);
-  - const desktop = getImagePaths(srcDesktop);
-
-  picture(class=className)
-    //- Desktop AVIF
-    source(media='(min-width: 1024px)', srcset=desktop.avif, type='image/avif')
-    //- Desktop WebP
-    source(media='(min-width: 1024px)', srcset=desktop.webp, type='image/webp')
-    //- Desktop fallback
-    source(media='(min-width: 1024px)', srcset=desktop.original)
-
-    //- Tablet AVIF
-    source(media='(min-width: 768px)', srcset=tablet.avif, type='image/avif')
-    //- Tablet WebP
-    source(media='(min-width: 768px)', srcset=tablet.webp, type='image/webp')
-    //- Tablet fallback
-    source(media='(min-width: 768px)', srcset=tablet.original)
-
-    //- Mobile AVIF
-    source(srcset=mobile.avif, type='image/avif')
-    //- Mobile WebP
-    source(srcset=mobile.webp, type='image/webp')
-    //- Mobile fallback
-    img(src=mobile.original, alt=alt, loading='lazy', decoding='async')
+    //- Default image
+    img(
+      width=width
+      height=height
+      src=lazy ? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==' : src
+      data-src=lazy ? src : null
+      alt=alt
+      loading=lazy ? 'lazy' : null
+      class=lazy ? ['lazy', classes] : classes
+    )&attributes(attributes)
