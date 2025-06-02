@@ -4,15 +4,20 @@ html(lang='ru')
     block variables
 
     meta(charset='UTF-8')
-    link(rel='icon', type='image/svg+xml', href='/vite.svg')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge')
 
     title #{ title || 'Vite App' }
     meta(
       name='description',
-      content=description || 'Vite app with Pug, Sass and cross-browser support'
+      content=description
     )
+
+    if libsCss
+      each css in libsCss
+        if isDev
+          link(rel='stylesheet', href=`/src/scss/libs/${css}.scss`)
+        else
+          link(rel='stylesheet', href=`css/libs/${css}.css`)
 
     //- Main CSS will be injected by Vite
     if isDev
@@ -38,10 +43,24 @@ html(lang='ru')
   body
     include ../components/header
 
-    main.main
+    main
       block content
 
     include ../components/footer
+
+    if isDev
+      script(type='module', src='/src/js/libs/lazyload.min.js')
+    else
+      script(type='module', src='js/libs/lazyload.min.js')
+    script.
+      document.addEventListener('DOMContentLoaded', function() {var lazyLoadInstance = new LazyLoad();});
+
+    if libsJs
+      each script in libsJs
+        if isDev
+          script(type='module', src=`/src/js/libs/${script}.js`)
+        else
+          script(type='module', src=`js/libs/${script}.js`)
 
     //- Main JavaScript
     if isDev
