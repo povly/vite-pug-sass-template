@@ -1,0 +1,10 @@
+.test-block {
+  background: blue;
+  padding: 20px;
+  margin: 10px;
+}
+
+/* Принудительно сохраняем CSS блок */
+body {
+  --test-block-loaded: true;
+}

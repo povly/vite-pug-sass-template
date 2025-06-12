@@ -122,16 +122,15 @@ function getSCSSEntries() {
           scanBlocksDir(`${dir}/${item.name}`, `${baseEntry}${item.name}/`);
         } else if (item.name.endsWith('.scss')) {
           const name = item.name.replace('.scss', '');
-          entries[`css/blocks/${baseEntry}${name}`] = resolve(
-            process.cwd(),
-            `${dir}/${item.name}`
-          );
+          const entryKey = `css/blocks/${baseEntry}${name}`;
+          const entryPath = resolve(process.cwd(), `${dir}/${item.name}`);
+
+                    entries[entryKey] = entryPath;
         }
       });
     }
     scanBlocksDir(blocksDir);
   }
-
   return entries;
 }
 
@@ -291,10 +290,27 @@ export default defineConfig(({ command, mode }) => {
           }
         },
       },
-      // Плагин для удаления пустых JS файлов от CSS entries
+      // Плагин для принудительного сохранения CSS блоков
       {
-        name: 'remove-empty-css-js',
+        name: 'preserve-css-blocks',
         generateBundle(options, bundle) {
+          const scssEntries = getSCSSEntries();
+
+          // Проверяем что все CSS блоки создались
+          Object.keys(scssEntries).forEach(entryKey => {
+            if (entryKey.includes('blocks/')) {
+              const expectedCssName = `${entryKey}.css`;
+              const hasCorrespondingCss = Object.keys(bundle).some(fileName =>
+                fileName === expectedCssName || fileName.includes(entryKey)
+              );
+
+              if (!hasCorrespondingCss) {
+                console.warn(`⚠️  Missing CSS for block entry: ${entryKey}`);
+              }
+            }
+          });
+
+          // Удаляем пустые JS файлы от CSS entries
           Object.keys(bundle).forEach((fileName) => {
             const file = bundle[fileName];
             if (
@@ -357,32 +373,28 @@ export default defineConfig(({ command, mode }) => {
             if (assetInfo.name?.endsWith('.css')) {
               const scssEntries = getSCSSEntries();
 
-              // Ищем entry ключ по имени asset'а
-              for (const [entryKey, entryPath] of Object.entries(scssEntries)) {
-                const entryFileName = entryKey.split('/').pop();
+                            // Найти подходящий entry для этого CSS
+              if (assetInfo.originalFileNames) {
+                for (const originalName of assetInfo.originalFileNames) {
+                  const normalizedOrig = originalName.replace(/\\/g, '/');
 
-                // Проверяем совпадение имени файла в asset'е
-                if (assetInfo.name.includes(entryFileName)) {
-                  // Дополнительная проверка через originalFileNames если они есть
-                  if (assetInfo.originalFileNames) {
-                    const hasMatch = assetInfo.originalFileNames.some(
-                      (orig) => {
-                        const normalizedOrig = orig.replace(/\\/g, '/');
-                        const normalizedEntry = entryPath.replace(/\\/g, '/');
-                        return (
-                          normalizedOrig.includes(normalizedEntry) ||
-                          normalizedEntry.includes(normalizedOrig)
-                        );
-                      }
-                    );
+                  for (const [entryKey, entryPath] of Object.entries(scssEntries)) {
+                    const normalizedEntry = entryPath.replace(/\\/g, '/');
 
-                    if (hasMatch) {
+                    if (normalizedOrig.includes(normalizedEntry) || normalizedEntry.includes(normalizedOrig)) {
                       return `${entryKey}.css`;
                     }
-                  } else {
-                    // Fallback если originalFileNames нет
-                    return `${entryKey}.css`;
                   }
+                }
+              }
+
+              // Fallback - ищем по имени
+              for (const [entryKey, entryPath] of Object.entries(scssEntries)) {
+                const entryFileName = entryKey.split('/').pop();
+                const assetFileName = assetInfo.name.replace('.css', '');
+
+                if (assetFileName === entryFileName) {
+                  return `${entryKey}.css`;
                 }
               }
 
