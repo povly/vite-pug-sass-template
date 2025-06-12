@@ -291,6 +291,26 @@ export default defineConfig(({ command, mode }) => {
           }
         },
       },
+      // Плагин для удаления пустых JS файлов от CSS entries
+      {
+        name: 'remove-empty-css-js',
+        generateBundle(options, bundle) {
+          Object.keys(bundle).forEach((fileName) => {
+            const file = bundle[fileName];
+            if (
+              file.type === 'chunk' &&
+              (file.facadeModuleId?.endsWith('.scss') ||
+                fileName.includes('css/blocks/') ||
+                (file.code &&
+                  file.code.trim().length < 100 &&
+                  (file.code.includes('import') === false || file.code === '')))
+            ) {
+              console.log(`🗑️  Removing empty CSS JS file: ${fileName}`);
+              delete bundle[fileName];
+            }
+          });
+        },
+      },
       // assetConverter(),
       commonjs(),
     ].filter(Boolean),
@@ -325,6 +345,7 @@ export default defineConfig(({ command, mode }) => {
             ) {
               return '[name].html';
             }
+
             if (chunkInfo.name.startsWith('js/')) {
               return '[name].js';
             }
