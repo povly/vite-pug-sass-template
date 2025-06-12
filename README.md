@@ -56,10 +56,19 @@ node scripts/convert-images.js src/images/gallery       # specific folder
 # Convert all assets
 npm run convert-assets
 
-# Code quality
-npm run lint              # Check all files
-npm run format           # Format all files
-npm run lint-staged      # Lint and format
+# Code quality - All files
+npm run lint              # Run all linting tools
+npm run format           # Format all files with Prettier
+npm run lint-staged      # Lint and format all files
+npm run check-format     # Check if files are properly formatted
+
+# Code quality - Individual tools
+npm run lint:js          # ESLint for JavaScript only
+npm run lint:css         # Stylelint for CSS/SCSS only
+npm run lint:pug         # Pug-lint for templates only
+npm run format:js        # Format JavaScript files only
+npm run format:css       # Format CSS/SCSS files only
+npm run format:pug       # Format Pug files only
 ```
 
 ## Project Structure
@@ -260,17 +269,22 @@ Read more: [IMAGES.md](IMAGES.md)
 
 ```bash
 # Check all code
-npm run lint
+npm run lint              # Run all linting tools
+npm run lint-staged      # Lint and format all files
 
-# Format all code
-npm run format
+# Individual linting tools
+npm run lint:js          # ESLint for JavaScript
+npm run lint:css         # Stylelint for CSS/SCSS
+npm run lint:pug         # Pug-lint for Pug templates
 
-# Individual tools
-npm run lint:js       # JavaScript only
-npm run lint:css      # CSS/SCSS only
-npm run lint:pug      # Pug only
-npm run format:js     # Format JavaScript
-npm run format:css    # Format CSS/SCSS
+# Format code
+npm run format           # Format all files with Prettier
+npm run format:js        # Format JavaScript files only
+npm run format:css       # Format CSS/SCSS files only
+npm run format:pug       # Format Pug files only
+
+# Check formatting
+npm run check-format     # Check if files are properly formatted
 ```
 
 ### Editor Integration
