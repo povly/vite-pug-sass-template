@@ -68,28 +68,43 @@ npm run lint-staged      # Lint and format
 ├── src/
 │   ├── pug/
 │   │   ├── pages/           # Website pages
-│   │   │   ├── index.pug
-│   │   │   └── about.pug
-│   │   ├── layout/          # Base templates
-│   │   │   └── base.pug
-│   │   ├── components/      # Components
-│   │   │   ├── header.pug
-│   │   │   └── footer.pug
-│   │   └── mixins/          # Pug mixins
-│   │       ├── button.pug
-│   │       └── picture.pug  # Image mixins
+│   │   │   └── index.pug    # Main page
+│   │   ├── layout/          # Base layout templates
+│   │   │   └── base.pug     # Main layout template
+│   │   ├── components/      # Reusable UI components
+│   │   │   ├── header/      # Header component
+│   │   │   │   └── header.pug
+│   │   │   └── footer/      # Footer component
+│   │   │       └── footer.pug
+│   │   ├── blocks/          # Page-specific blocks
+│   │   │   └── home/        # Home page blocks
+│   │   │       └── first.pug # First section
+│   │   ├── mixins/          # Reusable Pug mixins
+│   │   │   ├── picture.pug  # Responsive images
+│   │   │   ├── video.pug    # Video embeds
+│   │   │   └── iframe.pug   # Iframe embeds
+│   │   └── templates/       # Component templates
+│   │       └── p/           # Preset templates
+│   │           └── swiper/  # Swiper presets
+│   │               └── arrows.pug
 │   ├── scss/
-│   │   ├── main.scss        # Main styles
-│   │   ├── _fonts.scss      # Auto-generated fonts
-│   │   ├── mixins/          # SCSS mixins
-│   │   │   └── _images.scss # Image mixins
-│   │   ├── pages/           # Page styles
-│   │   │   ├── index.scss
-│   │   │   └── about.scss
-│   │   └── blocks/          # Block styles
-│   │       ├── header.scss
-│   │       ├── footer.scss
-│   │       └── button.scss
+│   │   ├── main.scss        # Global styles only
+│   │   ├── common/          # Common utilities
+│   │   │   ├── fonts.scss   # Font definitions
+│   │   │   ├── reset.scss   # CSS reset
+│   │   │   ├── tools.scss   # SCSS mixins
+│   │   │   └── modal.scss   # Common modals
+│   │   ├── includes/        # Layout components
+│   │   │   ├── header.scss  # Global header
+│   │   │   └── footer.scss  # Global footer
+│   │   ├── pages/           # Page-specific styles
+│   │   │   ├── index.scss   # Index page styles
+│   │   │   └── about.scss   # About page styles
+│   │   └── blocks/          # Independent blocks
+│   │       ├── home/        # Home page blocks
+│   │       │   ├── hero.scss
+│   │       │   ├── features.scss
+│   │       │   └── testimonials.scss
 │   ├── fonts/               # Source fonts (TTF/OTF)
 │   │   └── roboto/          # Group by families
 │   │       ├── Roboto-Regular.ttf
@@ -103,9 +118,17 @@ npm run lint-staged      # Lint and format
 │   │       ├── image-1.jpg
 │   │       └── image-2.png
 │   └── js/
-│       ├── main.js          # Common JavaScript
-│       ├── index.js         # Index page JS
-│       └── about.js         # About page JS
+│       ├── main.js          # Common JavaScript entry point
+│       ├── components/      # Reusable JS components
+│       │   ├── modal.js     # Modal dialogs
+│       │   ├── toast.js     # Toast notifications
+│       │   └── scrollanimation.js # Scroll animations
+│       ├── libs/            # Third-party libraries
+│       │   ├── swiper.js    # Swiper slider setup
+│       │   └── lazyload.min.js # Lazy loading images
+│       └── pages/           # Page-specific JavaScript
+│           └── home/        # Home page scripts
+│               └── faq.js   # FAQ interactions
 ├── public/
 │   ├── fonts/               # Converted fonts
 │   │   └── roboto/          # Structure preserved
@@ -145,13 +168,14 @@ build/
 ├── index.html               # Main page
 ├── about.html               # About page
 ├── css/
-│   ├── main.css            # Main styles
-│   ├── index.css           # Index styles
-│   ├── about.css           # About styles
-│   └── blocks/             # Block styles
-│       ├── header.css
-│       ├── footer.css
-│       └── button.css
+│   ├── main.css            # Global styles only
+│   ├── index.css           # Index page styles
+│   ├── about.css           # About page styles
+│   └── blocks/             # Independent block styles
+│       ├── home/           # Home page blocks
+│       │   ├── hero.css
+│       │   ├── features.css
+│       │   └── testimonials.css
 ├── fonts/                  # Web fonts (WOFF2/WOFF)
 │   └── roboto/             # Group by families
 │       ├── Roboto-Regular.woff
@@ -161,25 +185,24 @@ build/
 ├── images/                 # Optimized images
 │   └── ...                 # All formats: AVIF, WebP, original
 └── js/
-    ├── main.js             # Common JS
-    ├── index.js            # Index JS
-    └── about.js            # About JS
+    ├── main.js             # Common JS entry point
+    ├── libs/               # Third-party libraries
+    │   ├── swiper.js       # Swiper setup
+    │   └── lazyload.min.js # Image lazy loading
+    └── pages/              # Page-specific bundles
+        └── home/
+            └── faq.js      # FAQ page interactions
 ```
 
 ## Adding New Pages
 
-1. **Create Pug file**: `src/pug/pages/newpage.pug`
-2. **Create styles**: `src/scss/pages/newpage.scss`
-3. **Create JS**: `src/js/newpage.js`
-4. **Add link** in header.pug
+1. **Create HTML file**: `src/html/newpage.html` with:
+   ```html
+   <pug src="src/pug/pages/newpage.pug" />
+   ```
+2. **Create Pug file**: `src/pug/pages/newpage.pug`
 
 Vite automatically discovers and includes new files in the build.
-
-## Creating Blocks
-
-1. **Create SCSS**: `src/scss/blocks/blockname.scss`
-2. **Include in page**: add to `blocks` array in Pug file
-3. **Use**: apply CSS classes in markup
 
 ## Working with Fonts
 
