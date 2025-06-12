@@ -49,6 +49,10 @@ npm run convert-fonts
 # Convert images
 npm run convert-images
 
+# Convert specific files/folders
+node scripts/convert-images.js src/images/photo.jpg      # specific file
+node scripts/convert-images.js src/images/gallery       # specific folder
+
 # Convert all assets
 npm run convert-assets
 
