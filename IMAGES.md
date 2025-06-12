@@ -29,6 +29,7 @@ node scripts/convert-images.js src/images/gallery       # specific folder
 ## Conversion Commands
 
 ### All Images
+
 ```bash
 # Convert entire src/images/ directory
 npm run convert-images
@@ -37,6 +38,7 @@ node scripts/convert-images.js
 ```
 
 ### Specific File
+
 ```bash
 # Convert single image
 node scripts/convert-images.js src/images/hero/banner.jpg
@@ -44,6 +46,7 @@ node scripts/convert-images.js src/images/logo.png
 ```
 
 ### Specific Folder
+
 ```bash
 # Convert entire folder
 node scripts/convert-images.js src/images/gallery
@@ -52,6 +55,7 @@ node scripts/convert-images.js src/images/hero
 ```
 
 ### Examples
+
 ```bash
 # Gallery images only
 node scripts/convert-images.js src/images/gallery
@@ -129,6 +133,7 @@ src/images/
 ## Workflow Examples
 
 ### New Project Setup
+
 ```bash
 # 1. Create structure
 mkdir -p src/images/{hero,gallery,icons,backgrounds,content}
@@ -142,6 +147,7 @@ npm run convert-images
 ```
 
 ### Working with Specific Sections
+
 ```bash
 # Just updated gallery? Convert only gallery
 node scripts/convert-images.js src/images/gallery
@@ -154,6 +160,7 @@ node scripts/convert-images.js src/images/hero
 ```
 
 ### Development Workflow
+
 ```bash
 # 1. Add new image
 cp new-photo.jpg src/images/content/
@@ -177,6 +184,7 @@ npm run build
 ## Troubleshooting
 
 ### Command Not Found
+
 ```bash
 # Error: Cannot find module 'sharp'
 npm install
@@ -193,6 +201,7 @@ npm run convert-images
 4. **Browser cache**: Hard refresh (Ctrl+F5)
 
 ### Specific File Errors
+
 ```bash
 # File not found
 node scripts/convert-images.js src/images/nonexistent.jpg
