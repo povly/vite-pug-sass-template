@@ -1,0 +1,19 @@
+mixin iframe(args = {})
+  -
+    const {
+      src,
+      width,
+      height,
+      lazy,
+    } = args;
+
+  if lazy
+    iframe.lazy(
+      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg=="
+      data-src=src
+      width=width
+      height=height
+      allowfullscreen
+    )&attributes(attributes)
+  else
+    iframe(src=src width=width height=height allowfullscreen)&attributes(attributes)

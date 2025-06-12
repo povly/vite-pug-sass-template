@@ -18,6 +18,7 @@ export default {
     'selector-class-pattern': null,
     'declaration-block-no-redundant-longhand-properties': null,
     'scss/operator-no-newline-after': null,
+    'no-empty-source': null,
   },
   ignoreFiles: ['node_modules/**', 'build/**', 'dist/**'],
 };

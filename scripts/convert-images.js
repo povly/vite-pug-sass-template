@@ -1,6 +1,11 @@
 import { readdirSync, existsSync, mkdirSync, statSync } from 'fs';
 import { join, extname, basename, dirname, relative } from 'path';
 import sharp from 'sharp';
+import { fileURLToPath } from 'url';
+import { dirname as pathDirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = pathDirname(__filename);
 
 const SUPPORTED_FORMATS = [
   '.jpg',
@@ -13,6 +18,10 @@ const SUPPORTED_FORMATS = [
 ];
 const srcDir = 'src/images';
 const outputDir = 'public/images';
+
+// Получаем аргументы командной строки
+const args = process.argv.slice(2);
+const targetPath = args[0]; // путь к папке или файлу
 
 async function ensureDir(dirPath) {
   if (!existsSync(dirPath)) {
@@ -125,11 +134,89 @@ async function processDirectory(dirPath) {
   }
 }
 
+async function processSpecificFile(filePath) {
+  if (!existsSync(filePath)) {
+    console.error(`❌ Файл не найден: ${filePath}`);
+    return false;
+  }
+
+  const stat = statSync(filePath);
+  if (!stat.isFile()) {
+    console.error(`❌ Указанный путь не является файлом: ${filePath}`);
+    return false;
+  }
+
+  const ext = extname(filePath).toLowerCase();
+  if (!SUPPORTED_FORMATS.includes(ext)) {
+    console.error(`❌ Неподдерживаемый формат: ${ext}`);
+    console.log(`Поддерживаемые форматы: ${SUPPORTED_FORMATS.join(', ')}`);
+    return false;
+  }
+
+  const filename = basename(filePath);
+  console.log(`🖼️  Конвертируем файл: ${filename}`);
+
+  const success = await convertImage(filePath, outputDir, filename);
+  if (success) {
+    console.log(`✅ Файл успешно обработан: ${filename}`);
+  }
+
+  return success;
+}
+
+async function processSpecificDirectory(dirPath) {
+  if (!existsSync(dirPath)) {
+    console.error(`❌ Папка не найдена: ${dirPath}`);
+    return;
+  }
+
+  const stat = statSync(dirPath);
+  if (!stat.isDirectory()) {
+    console.error(`❌ Указанный путь не является папкой: ${dirPath}`);
+    return;
+  }
+
+  console.log(`📁 Обрабатываем папку: ${dirPath}`);
+  await processDirectory(dirPath);
+}
+
 async function main() {
   console.log('🖼️  Начинаем конвертацию изображений...\n');
 
   await ensureDir(outputDir);
-  await processDirectory(srcDir);
+
+  if (targetPath) {
+    // Проверяем существование пути
+    if (!existsSync(targetPath)) {
+      console.error(`❌ Путь не найден: ${targetPath}`);
+      console.log('\n💡 Использование:');
+      console.log('   node convert-images.js [путь]');
+      console.log(
+        '   node convert-images.js src/images/photo.jpg    # конкретный файл'
+      );
+      console.log(
+        '   node convert-images.js src/images/gallery     # конкретная папка'
+      );
+      console.log(
+        '   node convert-images.js                        # вся папка src/images'
+      );
+      return;
+    }
+
+    const stat = statSync(targetPath);
+
+    if (stat.isFile()) {
+      // Обрабатываем конкретный файл
+      await processSpecificFile(targetPath);
+    } else if (stat.isDirectory()) {
+      // Обрабатываем конкретную папку
+      await processSpecificDirectory(targetPath);
+    }
+  } else {
+    // Обрабатываем всю папку src/images
+    console.log(`📁 Обрабатываем всю папку: ${srcDir}`);
+    await processDirectory(srcDir);
+  }
 
   console.log('\n✨ Конвертация завершена!');
   console.log(`📁 Результат: ${outputDir}`);

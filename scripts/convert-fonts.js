@@ -139,9 +139,9 @@ function convertFonts() {
     fontFiles.map((f) => basename(f))
   );
 
-  // const convertedFonts = fontFiles.map((file) => {
-  //   return convertFont(file, OUTPUT_DIR);
-  // });
+  const convertedFonts = fontFiles.map((file) => {
+    return convertFont(file, OUTPUT_DIR);
+  });
 
   // // Генерируем CSS для шрифтов
   // const cssContent = generateFontCSS(convertedFonts);

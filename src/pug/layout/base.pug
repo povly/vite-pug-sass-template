@@ -17,20 +17,21 @@ html(lang='ru')
         if isDev
           link(rel='stylesheet', href=`/src/scss/libs/${css}.scss`)
         else
-          link(rel='stylesheet', href=`css/libs/${css}.css`)
+          link(rel='stylesheet', href=`css/libs/${css}.css?v=${Date.now()}`)
 
     //- Main CSS will be injected by Vite
     if isDev
       link(rel='stylesheet', href='/src/scss/main.scss')
     else
-      link(rel='stylesheet', href='css/main.css')
+      link(rel='stylesheet', href=`css/main.css?v=${Date.now()}`)
 
     //- Page-specific CSS
     if pageCss
-      if isDev
-        link(rel='stylesheet', href=`/src/scss/pages/${pageCss}.scss`)
-      else
-        link(rel='stylesheet', href=`css/${pageCss}.css`)
+      each css in pageCss
+        if isDev
+          link(rel='stylesheet', href=`/src/scss/pages/${css}.scss`)
+        else
+          link(rel='stylesheet', href=`css/${css}.css?v=${Date.now()}`)
 
     //- Block CSS
     if blocks
@@ -38,20 +39,20 @@ html(lang='ru')
         if isDev
           link(rel='stylesheet', href=`/src/scss/blocks/${block}.scss`)
         else
-          link(rel='stylesheet', href=`css/blocks/${block}.css`)
+          link(rel='stylesheet', href=`css/blocks/${block}.css?v=${Date.now()}`)
 
   body
-    include ../components/header
+    block header
 
     main
       block content
 
-    include ../components/footer
+    block footer
 
     if isDev
       script(type='module', src='/src/js/libs/lazyload.min.js')
     else
-      script(type='module', src='js/libs/lazyload.min.js')
+      script(type='module', src=`js/libs/lazyload.min.js?v=${Date.now()}`)
     script.
       document.addEventListener('DOMContentLoaded', function() {var lazyLoadInstance = new LazyLoad();});
 
@@ -60,13 +61,13 @@ html(lang='ru')
         if isDev
           script(type='module', src=`/src/js/libs/${script}.js`)
         else
-          script(type='module', src=`js/libs/${script}.js`)
+          script(type='module', src=`js/libs/${script}.js?v=${Date.now()}`)
 
     //- Main JavaScript
     if isDev
       script(type='module', src='/src/js/main.js')
     else
-      script(type='module', src='js/main.js')
+      script(type='module', src=`js/main.js?v=${Date.now()}`)
 
     //- Page-specific JavaScript
     if pageJs
@@ -74,5 +75,4 @@ html(lang='ru')
         if isDev
           script(type='module', src=`/src/js/${script}.js`)
         else
-          script(type='module', src=`js/${script}.js`)
-
+          script(type='module', src=`js/${script}.js?v=${Date.now()}`)

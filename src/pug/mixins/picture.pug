@@ -30,3 +30,24 @@ mixin picture(args = {})
       loading=lazy ? 'lazy' : null
       class=lazy ? ['lazy', classes] : classes
     )&attributes(attributes)
+
+mixin img(args = {})
+  -
+    const {
+      src,
+      lazy = false,
+      classes = '',
+      width,
+      height,
+      srcset = '',
+      alt = '',
+    } = args;
+  img(
+    width=width
+    height=height
+    src=lazy ? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==' : src
+    data-src=lazy ? src : null
+    alt=alt
+    loading=lazy ? 'lazy' : null
+    class=lazy ? ['lazy', classes] : classes
+  )&attributes(attributes)

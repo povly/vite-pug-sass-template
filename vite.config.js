@@ -2,39 +2,29 @@ import { defineConfig } from 'vite';
 import pug from 'vite-plugin-pug';
 import autoprefixer from 'autoprefixer';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-import { resolve, dirname } from 'path';
-import {
-  readdirSync,
-  existsSync,
-  copyFileSync,
-  unlinkSync,
-  rmSync,
-  mkdirSync,
-} from 'fs';
+import { resolve } from 'path';
+import { readdirSync, existsSync, copyFileSync, unlinkSync, rmSync } from 'fs';
 import { execSync } from 'child_process';
 import process from 'process';
-import liveReload from 'vite-plugin-live-reload';
 import commonjs from '@rollup/plugin-commonjs';
 
-// Ручное указание HTML страниц в src/html
+// Автоматическое сканирование HTML страниц в src/html
 function getHTMLPages() {
   const htmlDir = 'src/html';
   const pages = {};
 
-  // Вручную указываем страницы
-  const pagesList = [
-    'index',
-    'about',
-    // Добавляйте новые страницы здесь
-  ];
+  if (existsSync(htmlDir)) {
+    const htmlFiles = readdirSync(htmlDir).filter((file) =>
+      file.endsWith('.html')
+    );
 
-  pagesList.forEach((pageName) => {
-    const htmlPath = resolve(process.cwd(), `${htmlDir}/${pageName}.html`);
-    if (existsSync(htmlPath)) {
+    htmlFiles.forEach((file) => {
+      const pageName = file.replace('.html', '');
+      const htmlPath = resolve(process.cwd(), `${htmlDir}/${file}`);
       // Используем только имя файла как ключ, чтобы избежать вложенных директорий
       pages[pageName] = htmlPath;
-    }
-  });
+    });
+  }
 
   return pages;
 }
@@ -240,42 +230,41 @@ export default defineConfig(({ command, mode }) => {
       ),
       // Оптимизация изображений в production
       !isDev &&
-      ViteImageOptimizer({
-        jpg: {
-          quality: 90,
-          progressive: true,
-        },
-        jpeg: {
-          quality: 90,
-          progressive: true,
-        },
-        png: {
-          quality: 90,
-          compressionLevel: 9,
-        },
-        webp: {
-          quality: 85,
-          effort: 4,
-        },
-        avif: {
-          quality: 80,
-          effort: 4,
-        },
-        svg: {
-          plugins: [
-            { name: 'removeViewBox', active: false },
-            { name: 'removeDimensions', active: true },
-            { name: 'removeComments', active: true },
-            { name: 'removeUselessStrokeAndFill', active: true },
-          ],
-        },
-      }),
-      liveReload(['src/**/*.{html,js,scss}']),
+        ViteImageOptimizer({
+          jpg: {
+            quality: 90,
+            progressive: true,
+          },
+          jpeg: {
+            quality: 90,
+            progressive: true,
+          },
+          png: {
+            quality: 90,
+            compressionLevel: 9,
+          },
+          webp: {
+            quality: 85,
+            effort: 4,
+          },
+          avif: {
+            quality: 80,
+            effort: 4,
+          },
+          svg: {
+            plugins: [
+              { name: 'removeViewBox', active: false },
+              { name: 'removeDimensions', active: true },
+              { name: 'removeComments', active: true },
+              { name: 'removeUselessStrokeAndFill', active: true },
+            ],
+          },
+        }),
       // Кастомный плагин для перемещения HTML файлов в корень build
       {
         name: 'move-html-to-root',
         writeBundle() {
-          // Копируем HTML файлы из build/src/html/ в build/
+          // Копируем HTML файлы из src/html/ в build/
           const buildDir = 'build';
           const htmlDir = `${buildDir}/src/html`;
 
@@ -302,7 +291,7 @@ export default defineConfig(({ command, mode }) => {
           }
         },
       },
-      assetConverter(),
+      // assetConverter(),
       commonjs(),
     ].filter(Boolean),
     css: {
@@ -313,7 +302,7 @@ export default defineConfig(({ command, mode }) => {
         },
       },
       postcss: {
-        plugins: [autoprefixer()],
+        plugins: !isDev && [autoprefixer()],
       },
     },
     build: {
@@ -342,36 +331,51 @@ export default defineConfig(({ command, mode }) => {
             // Другие entry points
             return 'js/[name].js';
           },
-          chunkFileNames: 'js/[name].js',
+          chunkFileNames: 'js/[name]-[hash].js',
           assetFileNames: (assetInfo) => {
             if (assetInfo.name?.endsWith('.css')) {
-              // Извлекаем имя файла без лишних путей
+              const scssEntries = getSCSSEntries();
+
+              // Ищем entry ключ по имени asset'а
+              for (const [entryKey, entryPath] of Object.entries(scssEntries)) {
+                const entryFileName = entryKey.split('/').pop();
+
+                // Проверяем совпадение имени файла в asset'е
+                if (assetInfo.name.includes(entryFileName)) {
+                  // Дополнительная проверка через originalFileNames если они есть
+                  if (assetInfo.originalFileNames) {
+                    const hasMatch = assetInfo.originalFileNames.some(
+                      (orig) => {
+                        const normalizedOrig = orig.replace(/\\/g, '/');
+                        const normalizedEntry = entryPath.replace(/\\/g, '/');
+                        return (
+                          normalizedOrig.includes(normalizedEntry) ||
+                          normalizedEntry.includes(normalizedOrig)
+                        );
+                      }
+                    );
+
+                    if (hasMatch) {
+                      return `${entryKey}.css`;
+                    }
+                  } else {
+                    // Fallback если originalFileNames нет
+                    return `${entryKey}.css`;
+                  }
+                }
+              }
+
+              // Последний fallback
               const fileName = assetInfo.name
                 .split('/')
                 .pop()
                 .replace(/\.[^/.]+$/, '');
-
-              // Определяем оригинальный entry ключ
-              if (assetInfo.originalFileNames) {
-                const originalEntry = Object.keys({
-                  ...getSCSSEntries(),
-                }).find((key) =>
-                  assetInfo.originalFileNames.some((orig) =>
-                    orig.includes(key.split('/').pop())
-                  )
-                );
-
-                if (originalEntry?.startsWith('css/blocks/')) {
-                  return `css/blocks/${fileName}.css`;
-                }
-                if (originalEntry?.startsWith('css/libs/')) {
-                  return `css/libs/${fileName}.css`;
-                }
-              }
-
               return `css/${fileName}.css`;
             }
             return 'assets/[name]-[hash][extname]';
+          },
+          globals: {
+            // Определяем глобальные переменные для избежания конфликтов
           },
         },
       },
@@ -380,6 +384,15 @@ export default defineConfig(({ command, mode }) => {
         compress: {
           drop_console: true,
           drop_debugger: true,
+          pure_funcs: ['console.log', 'console.info', 'console.debug'],
+        },
+        mangle: {
+          // Безопасный mangling для избежания конфликтов
+          reserved: ['$', 'jQuery', 'window', 'document'],
+          properties: false,
+        },
+        format: {
+          comments: false,
         },
       },
     },

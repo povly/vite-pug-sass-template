@@ -2,16 +2,23 @@ extends ../layout/base
 
 //- Include mixins
 include ../mixins/picture
+include ../mixins/video
+include ../mixins/iframe
 
 block variables
   - var title = 'Главная';
   - var description = '';
-  //- - var pageCss = 'index';
-  //- - var pageJs = ['pages/home/often'];
-  //- - var blocks = [];
-  //- - var currentPage = 'index';
-  //- - var libsJs = ['swiper.min'];
-  //- - var libsCss = ['swiper'];
+  - var pageCss = ['index'];  // Страничные стили /pages/index.scss
+  //- - var pageJs = ['pages/home/trust', 'pages/home/lab', 'pages/home/faq']; -- Сюда добавляем скрипты для страницы (из блока)
+  //- - var blocks = []; -- Сюда добавляем блоки для страницы (из блока)
+  //- - var libsJs = ['swiper']; -- Сюда добавляем скрипты библиотек для страницы
+  //- - var libsCss = ['swiper']; -- Сюда добавляем стили библиотек для страницы
+
+block header
+  include ../components/header/header
 
 block content
-  //- include ../blocks/home/first
+  include ../blocks/home/first
+
+block footer
+  include ../components/footer/footer

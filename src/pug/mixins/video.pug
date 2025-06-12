@@ -1,0 +1,20 @@
+mixin video(args = {})
+  -
+    const {
+      src,
+      lazy = false,
+      width,
+      height,
+      posterLazy = false,
+      poster = ''
+    } = args;
+
+  video(
+    src=lazy ? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==' : src
+    data-src=lazy ? src : null,
+    data-poster=posterLazy ? poster : null,
+    poster=posterLazy ? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==' : poster
+    width=width ? width : null,
+    height=height ? height : null,
+    class=lazy ? 'lazy' : '',
+  )&attributes(attributes)
