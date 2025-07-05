@@ -36,6 +36,7 @@ npm install
 ```bash
 # Development mode
 npm run dev
+# Pages available at localhost:5173/src/html/
 
 # Production build
 npm run build
